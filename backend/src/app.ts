@@ -3,7 +3,8 @@ import express from "express";
 
 import { config } from "./config";
 import { connection } from "./config/database";
-import userRoutes from "./routes/user.routes";
+import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
 
 const app = express();
 
@@ -12,6 +13,7 @@ connection();
 app.use(express.json());
 app.use(cors());
 
+app.use("api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 
 app.listen(config.port, () => {
