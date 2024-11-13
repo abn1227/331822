@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts",
-    "build": "tsc",
-    "test": "jest",
+    "docker:up": "docker-compose -f mongo-compose.yml up -d",
+    "docker:down": "docker-compose -f mongo-compose.yml down",
+    "docker:logs": "docker-compose -f mongo-compose.yml logs -f",
+    "predev": "npm run docker:up",
+    "dev": "nodemon -r tsconfig-paths/register src/app.ts",
+    "build": "tsc && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "start": "node -r tsconfig-paths/register dist/app.js",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\"",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "test": "jest",
+    "clean": "npm run docker:down && rimraf dist"
   },
   "keywords": [],
   "author": "",
@@ -47,6 +51,7 @@
     "nodemon": "^3.0.1",
     "prettier": "^3.3.3",
     "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0"
   }
 }

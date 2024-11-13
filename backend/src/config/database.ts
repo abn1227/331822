@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { config } from "./index";
+import { config } from "@/config";
 
 export const connection = async (): Promise<void> => {
   try {

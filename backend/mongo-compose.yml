@@ -1,6 +1,3 @@
-# docker-compose.yml
-version: '3.8'
-
 services:
   mongodb:
     image: mongo:latest
@@ -15,6 +12,12 @@ services:
       - mongodb_data:/data/db
     networks:
       - handy_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   mongo-express:
     image: mongo-express:latest
@@ -26,7 +29,8 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: rootpassword
       ME_CONFIG_MONGODB_URL: mongodb://root:rootpassword@mongodb:27017/
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     networks:
       - handy_network
 

@@ -13,9 +13,9 @@
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "sourceMap": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*"],

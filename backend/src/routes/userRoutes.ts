@@ -7,6 +7,10 @@ import { validateDto } from "@/middlewares/validateDto";
 const router = Router();
 const userController = new UserController();
 
-router.post("/", validateDto(CreateUserDto), userController.create);
+router.post(
+  "/",
+  validateDto(CreateUserDto),
+  userController.create.bind(userController)
+);
 
 export default router;
