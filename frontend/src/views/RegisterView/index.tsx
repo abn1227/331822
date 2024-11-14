@@ -1,10 +1,10 @@
-import Button from "../components/Button";
-import Card from "../components/Card";
-import Container from "../components/Container";
-import Input from "../components/Input";
-import MainLayout from "../layouts/MainLayout";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
+import Container from "../../components/Container";
+import Input from "../../components/Input";
+import MainLayout from "../../layouts/MainLayout";
 
-const LoginView = () => {
+const RegisterView = () => {
   return (
     <MainLayout>
       <Container
@@ -16,10 +16,11 @@ const LoginView = () => {
           variant="transparent"
           childrenClassName="flex flex-col gap-6"
         >
-          <h2>Login</h2>
+          <h2>Register</h2>
           <p className="text-center text-sm text-foreground/60">
-            Enter your email and password to log in
+            Enter your email and password to create an account
           </p>
+          <Input label="Name" variant="primary" fullWidth />
           <Input label="Email" variant="primary" fullWidth type="email" />
           <Input
             label="Password"
@@ -28,10 +29,13 @@ const LoginView = () => {
             type="password"
           />
           <Button variant="primary" className="w-full">
-            Login
+            Register
           </Button>
           <p className="text-center text-sm text-foreground/60">
-            Don't have an account? <span className="text-primary">Sign up</span>
+            Already have an account?{" "}
+            <a className="text-primary" href="/login">
+              Login
+            </a>
           </p>
         </Card>
       </Container>
@@ -39,4 +43,4 @@ const LoginView = () => {
   );
 };
 
-export default LoginView;
+export default RegisterView;

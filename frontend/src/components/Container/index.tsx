@@ -17,7 +17,7 @@ const Container: React.FC<ContainerProps> = ({
   };
 
   return (
-    <div className={`${className} w-full mx-auto h-screen ${widths[width]}`}>
+    <div className={`${className} w-full mx-auto ${widths[width]}`}>
       {children}
     </div>
   );

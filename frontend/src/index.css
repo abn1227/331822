@@ -28,4 +28,5 @@
 body {
   background-color: rgb(var(--color-background-rgb));
   color: rgb(var(--color-text-rgb));
+  font-family: "Lato", sans-serif;
 }
