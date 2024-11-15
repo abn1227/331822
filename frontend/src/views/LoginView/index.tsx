@@ -15,25 +15,26 @@ const LoginView = () => {
           blur="sm"
           variant="transparent"
           childrenClassName="flex flex-col gap-6"
+          className="w-full md:w-2/3"
         >
-          <h2>Login</h2>
-          <p className="text-center text-sm text-foreground/60">
-            Enter your email and password to log in
+          <h2>Iniciar Sesión</h2>
+          <p className="text-left text-sm text-foreground/60">
+            Ingresa tu email y contraseña para iniciar sesión
           </p>
           <Input label="Email" variant="primary" fullWidth type="email" />
           <Input
-            label="Password"
+            label="Contraseña"
             variant="secondary"
             fullWidth
             type="password"
           />
           <Button variant="primary" className="w-full">
-            Login
+            Iniciar Sesión
           </Button>
           <p className="text-center text-sm text-foreground/60">
-            Don't have an account?{" "}
+            ¿No tienes una cuenta?{" "}
             <a className="text-primary" href="/register">
-              Sign up
+              Registrate aquí
             </a>
           </p>
         </Card>

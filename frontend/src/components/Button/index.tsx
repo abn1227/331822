@@ -86,7 +86,7 @@ const Button: React.FC<GlassButtonProps> = ({
       disabled={disabled || loading}
       className={`
         relative
-        rounded-lg
+        rounded-3xl
         backdrop-blur-md
         border
         transition-all
@@ -106,7 +106,7 @@ const Button: React.FC<GlassButtonProps> = ({
       `}
       {...props}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent rounded-lg pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent rounded-3xl pointer-events-none" />
 
       <div className="relative z-10 flex items-center gap-2">
         {loading ? (

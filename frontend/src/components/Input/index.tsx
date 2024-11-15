@@ -25,6 +25,7 @@ const Input = forwardRef<HTMLInputElement, GlassInputProps>(
       className = "",
       containerClassName = "",
       disabled = false,
+      required = false,
       ...props
     },
     ref
@@ -81,6 +82,7 @@ const Input = forwardRef<HTMLInputElement, GlassInputProps>(
     disabled:opacity-50
     disabled:cursor-not-allowed
     placeholder:opacity-50
+    hover:border-white/30
     ${error ? "border-error/50" : variants[variant]}
   `;
 
@@ -104,7 +106,7 @@ const Input = forwardRef<HTMLInputElement, GlassInputProps>(
             ${disabled ? "opacity-50" : ""}
           `}
           >
-            {label}
+            {label} {required && <span className="text-error">*</span>}
           </label>
         )}
 

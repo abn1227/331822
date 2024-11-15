@@ -15,26 +15,35 @@ const RegisterView = () => {
           blur="sm"
           variant="transparent"
           childrenClassName="flex flex-col gap-6"
+          className="w-full md:w-2/3"
         >
-          <h2>Register</h2>
-          <p className="text-center text-sm text-foreground/60">
-            Enter your email and password to create an account
+          <h2>Registrarse</h2>
+          <p className="text-left text-sm text-foreground/60">
+            Ingresa tus datos para registrarte
           </p>
-          <Input label="Name" variant="primary" fullWidth />
-          <Input label="Email" variant="primary" fullWidth type="email" />
+          <Input label="Nombres" variant="primary" fullWidth required />
+          <Input label="Apellidos" variant="primary" fullWidth required />
           <Input
-            label="Password"
+            label="Email"
+            variant="primary"
+            fullWidth
+            type="email"
+            required
+          />
+          <Input
+            label="Contraseña"
             variant="secondary"
             fullWidth
             type="password"
+            required
           />
           <Button variant="primary" className="w-full">
-            Register
+            Registrarse
           </Button>
           <p className="text-center text-sm text-foreground/60">
-            Already have an account?{" "}
+            ¿Ya tienes una cuenta?{" "}
             <a className="text-primary" href="/login">
-              Login
+              Iniciar sesión
             </a>
           </p>
         </Card>

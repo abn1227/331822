@@ -7,7 +7,7 @@ interface GlassCardProps {
   childrenClassName?: string;
   variant?: Variant;
   blur?: BlurLevel;
-  // opacity?: string;
+  opacity?: string;
 }
 
 const Card: React.FC<GlassCardProps> = ({
@@ -19,12 +19,12 @@ const Card: React.FC<GlassCardProps> = ({
 }) => {
   // Configuración de variantes de color
   const variants: Record<Variant, string> = {
-    primary: "bg-primary bg-opacity-30",
-    secondary: "bg-secondary bg-opacity-30",
-    accent: "bg-accent bg-opacity-30",
-    error: "bg-error bg-opacity-30",
-    success: "bg-success bg-opacity-30",
-    warning: "bg-warning bg-opacity-30",
+    primary: `bg-primary/30`,
+    secondary: `bg-secondary/30`,
+    accent: `bg-accent/30`,
+    error: `bg-error/30`,
+    success: `bg-success/30`,
+    warning: `bg-warning/30`,
     transparent: "bg-transparent",
   };
 
@@ -39,10 +39,10 @@ const Card: React.FC<GlassCardProps> = ({
   return (
     <div
       className={`
-        relative rounded-xl 
+        relative rounded-2xl
         ${variants[variant]}
         ${blurLevels[blur]}
-        border border-white/20
+        border border-white/20 hover:border-white/30
         shadow-lg
         p-6
         dark:border-white/10
@@ -50,7 +50,7 @@ const Card: React.FC<GlassCardProps> = ({
         ${className}
       `}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-xl" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-2xl" />
       <div className={`relative z-10 ${childrenClassName}`}>{children}</div>
     </div>
   );
