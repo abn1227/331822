@@ -1,16 +1,17 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface IUser extends Document {
+export interface IHandyMan extends Document {
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
-  role: "admin" | "user";
+  phone: string;
+  expertise: string;
+  availability: string[];
+  services: string[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-const UserSchema = new Schema<IUser>(
+const HandyManSchema = new Schema<IHandyMan>(
   {
     firstName: {
       type: String,
@@ -20,19 +21,21 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
+    phone: {
       type: String,
       required: true,
     },
-    role: {
+    expertise: {
       type: String,
       required: true,
-      enum: ["admin", "user"],
+    },
+    availability: {
+      type: [String],
+      required: true,
+    },
+    services: {
+      type: [String],
+      required: true,
     },
   },
   {
@@ -40,4 +43,4 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-export const User = mongoose.model<IUser>("User", UserSchema);
+export const HandyMan = mongoose.model<IHandyMan>("HandyMan", HandyManSchema);

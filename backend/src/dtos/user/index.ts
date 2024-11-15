@@ -3,7 +3,11 @@ import { IsEmail, IsString, MinLength, IsEnum } from "class-validator";
 export class CreateUserDto {
   @IsString()
   @MinLength(3)
-  name: string;
+  firstName: string;
+
+  @IsString()
+  @MinLength(3)
+  lastName: string;
 
   @IsEmail()
   email: string;
@@ -19,7 +23,11 @@ export class CreateUserDto {
 export class UpdateUserDto {
   @IsString()
   @MinLength(3)
-  name?: string;
+  firstName?: string;
+
+  @IsString()
+  @MinLength(3)
+  lastName?: string;
 
   @IsString()
   @MinLength(8)

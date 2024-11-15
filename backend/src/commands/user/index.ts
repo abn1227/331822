@@ -23,7 +23,7 @@ export class UserCommandHandlers {
   constructor(private userRepository: UserRepository) {}
 
   async createUser(command: CreateUserCommand): Promise<IUser> {
-    const { name, email, password, role } = command.data;
+    const { firstName, lastName, email, password, role } = command.data;
 
     const existingUser = await this.userRepository.findByEmail(email);
 
@@ -34,7 +34,8 @@ export class UserCommandHandlers {
     const hashedPassword = await hash(password, 10);
 
     const user = await this.userRepository.create({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
       role,
@@ -52,10 +53,14 @@ export class UserCommandHandlers {
       throw new Error(`User not found with id: ${id}`);
     }
 
-    const { name, password } = data;
+    const { firstName, lastName, password } = data;
 
-    if (name) {
-      user.name = name;
+    if (firstName) {
+      user.firstName = firstName;
+    }
+
+    if (lastName) {
+      user.lastName = lastName;
     }
 
     if (password) {
