@@ -8,6 +8,7 @@ interface GlassCardProps {
   variant?: Variant;
   blur?: BlurLevel;
   opacity?: string;
+  title?: string;
 }
 
 const Card: React.FC<GlassCardProps> = ({
@@ -16,15 +17,26 @@ const Card: React.FC<GlassCardProps> = ({
   variant = "primary",
   blur = "md",
   childrenClassName = "",
+  title,
 }) => {
   // Configuración de variantes de color
   const variants: Record<Variant, string> = {
-    primary: `bg-primary/30`,
-    secondary: `bg-secondary/30`,
-    accent: `bg-accent/30`,
-    error: `bg-error/30`,
-    success: `bg-success/30`,
-    warning: `bg-warning/30`,
+    primary: `bg-primary/20`,
+    secondary: `bg-secondary/20`,
+    accent: `bg-accent/20`,
+    error: `bg-error/20`,
+    success: `bg-success/20`,
+    warning: `bg-warning/20`,
+    transparent: "bg-transparent",
+  };
+
+  const titleBackgrounds: Record<Variant, string> = {
+    primary: "bg-primary/60",
+    secondary: "bg-secondary/60",
+    accent: "bg-accent/60",
+    error: "bg-error/60",
+    success: "bg-success/60",
+    warning: "bg-warning/60",
     transparent: "bg-transparent",
   };
 
@@ -51,7 +63,18 @@ const Card: React.FC<GlassCardProps> = ({
       `}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-2xl" />
-      <div className={`relative z-10 ${childrenClassName}`}>{children}</div>
+      {title && (
+        <div
+          className={`absolute inset-0 ${titleBackgrounds[variant]} rounded-t-2xl text-center h-10 p-2`}
+        >
+          {title}
+        </div>
+      )}
+      <div
+        className={`relative z-10 ${childrenClassName} ${title ? "pt-6" : ""}`}
+      >
+        {children}
+      </div>
     </div>
   );
 };
