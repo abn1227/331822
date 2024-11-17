@@ -4,29 +4,73 @@ import { UserRepository } from "../repositories/UserRepository";
 
 import {
   LoginCommand,
-  LoginCommandHandler,
-} from "@/commands/auth/loginCommand";
+  AuthCommandHandlers,
+  RegisterCommand,
+} from "@/commands/auth";
 import { AuthService } from "@/services/authService";
 
 export class AuthController {
-  private loginHandler: LoginCommandHandler;
+  private authHandler: AuthCommandHandlers;
 
   constructor() {
     const userRepository = new UserRepository();
     const authService = new AuthService();
-    this.loginHandler = new LoginCommandHandler(userRepository, authService);
+    this.authHandler = new AuthCommandHandlers(userRepository, authService);
   }
 
   async login(req: Request, res: Response) {
     try {
       const command = new LoginCommand(req.body);
-      const result = await this.loginHandler.execute(command);
-      return res.json(result);
+      const result = await this.authHandler.login(command);
+      return res.json({
+        data: result,
+        status: 200,
+      });
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });
       }
 
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async register(req: Request, res: Response) {
+    try {
+      const command = new RegisterCommand(req.body);
+      const result = await this.authHandler.register(command);
+      return res.json({
+        data: result,
+        status: 200,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
+
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async check(req: Request, res: Response) {
+    try {
+      const user = req.user;
+      if (!user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      return res.json({
+        data: {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+        },
+        status: 200,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
       return res.status(500).json({ message: "Internal server error" });
     }
   }

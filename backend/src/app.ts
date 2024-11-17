@@ -8,6 +8,7 @@ import { swaggerSpec } from "./config/swagger";
 import authRoutes from "./routes/authRoutes";
 import handyManRoutes from "./routes/handyManRoutes";
 import userRoutes from "./routes/userRoutes";
+import adminSeeder from "./seeders/adminSeeder";
 
 const app = express();
 
@@ -26,6 +27,9 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, { explorer: true })
 );
+
+// Seeders
+adminSeeder();
 
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);

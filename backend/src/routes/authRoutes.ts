@@ -1,12 +1,13 @@
 import { Router } from "express";
 
 import { AuthController } from "@/controller/AuthController";
-import { LoginDto } from "@/dtos/auth";
+import { LoginDto, RegisterDto } from "@/dtos/auth";
+import { AuthMiddleware } from "@/middlewares/authMiddleware";
 import { validateDto } from "@/middlewares/validateDto";
-// import { validateDto } from "@/middlewares/validateDto";
 
 const router = Router();
 const authController = new AuthController();
+const authMiddleware = new AuthMiddleware();
 
 /**
  * @swagger
@@ -40,6 +41,22 @@ const authController = new AuthController();
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.post("/login", validateDto(LoginDto), authController.login.bind(authController));
+router.post(
+  "/login",
+  validateDto(LoginDto),
+  authController.login.bind(authController)
+);
+
+router.post(
+  "/register",
+  validateDto(RegisterDto),
+  authController.register.bind(authController)
+);
+
+router.get(
+  "/check",
+  authMiddleware.authenticate,
+  authController.check.bind(authController)
+);
 
 export default router;

@@ -14,10 +14,13 @@ declare module "express-serve-static-core" {
 }
 
 export class AuthMiddleware {
-  constructor(
-    private authService: AuthService,
-    private userRepository: UserRepository
-  ) {}
+  private authService: AuthService;
+  private userRepository: UserRepository;
+
+  constructor() {
+    this.authService = new AuthService();
+    this.userRepository = new UserRepository();
+  }
 
   authenticate = async (req: Request, res: Response, next: NextFunction) => {
     try {

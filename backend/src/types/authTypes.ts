@@ -8,8 +8,11 @@ export interface LoginResponse {
   user: {
     id: string;
     email: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     role: "admin" | "user";
   };
   token: string;
 }
+
+export interface RegisterResponse extends LoginResponse {}
