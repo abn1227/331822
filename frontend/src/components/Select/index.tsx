@@ -178,7 +178,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
         <div
           className={`
             fixed z-[9999] 
-            bg-white/10 backdrop-blur-md 
+            bg-background/50 backdrop-blur-md
             border border-white/20 
             rounded-sm shadow-lg 
             max-h-60 overflow-y-auto 
@@ -221,7 +221,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
                       ${
                         selectedValues.includes(option.value)
                           ? "bg-primary border-primary"
-                          : "border-white/20"
+                          : "border-primary"
                       }
                     `}
                   >

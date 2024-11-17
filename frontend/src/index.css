@@ -5,7 +5,7 @@
 :root {
   --color-primary-rgb: 7, 72, 93; /* #07485D en RGB */
   --color-secondary-rgb: 2, 125, 138; /* #027d8a en RGB */
-  --color-accent-rgb: 245, 78, 41; /* #F54E29 en RGB */
+  --color-accent-rgb: 255, 193, 7; /* #FFC107 en RGB */
   --color-background-rgb: 254, 254, 254; /* #FEFEFE en RGB */
   --color-text-rgb: 96, 82, 73; /* #605249 en RGB */
   --color-text-contrast-rgb: 226, 232, 240; /* #E2E8F0 en RGB */
@@ -18,7 +18,7 @@
 .dark {
   --color-primary-rgb: 7, 72, 93; /* #07485D en RGB */
   --color-secondary-rgb: 2, 125, 138; /* #027d8a en RGB */
-  --color-accent-rgb: 245, 78, 41; /* #F54E29 en RGB */
+  --color-accent-rgb: 255, 193, 7; /* #FFC107 en RGB */
   --color-background-rgb: 44, 62, 80; /* #2C3E50 en RGB */
   --color-text-rgb: 226, 232, 240; /* #E2E8F0 en RGB */
   --color-text-contrast-rgb: 226, 232, 240; /* #E2E8F0 en RGB */
