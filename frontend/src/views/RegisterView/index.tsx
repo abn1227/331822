@@ -42,7 +42,7 @@ const RegisterView = () => {
           </Button>
           <p className="text-center text-sm text-foreground/60">
             ¿Ya tienes una cuenta?{" "}
-            <a className="text-primary" href="/login">
+            <a className="text-accent" href="/login">
               Iniciar sesión
             </a>
           </p>

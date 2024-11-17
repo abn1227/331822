@@ -89,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = ({
       className={`
         fixed top-0 left-0 right-0 z-50
         transition-all duration-300
-        ${scrolled ? "bg-white/10" : "bg-white/5"}
+        ${scrolled ? "bg-primary/20" : "bg-primary/15"}
         backdrop-blur-md
         border-b border-white/10
         ${className}
@@ -111,7 +111,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 <a
                   key={item.href}
                   href={item.href}
-                  className="py-2 px-3 rounded-lg hover:bg-white/10 transition-all"
+                  className="py-2 px-3 rounded-lg hover:bg-white/10 transition-all hover:scale-105"
                 >
                   {item.label}
                 </a>
@@ -180,7 +180,9 @@ const Navbar: React.FC<NavbarProps> = ({
             onClick={toggleTheme}
             className="w-full text-left py-2 px-3 rounded-lg hover:bg-white/10 transition-all"
           >
-            {theme === "light" ? "Modo Claro" : "Modo Oscuro"}
+            {theme === "light"
+              ? "Cambiar a modo oscuro"
+              : "Cambiar a modo claro"}
           </button>
         </div>
       </div>

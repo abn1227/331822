@@ -25,47 +25,53 @@ const Button: React.FC<GlassButtonProps> = ({
   // Configuración de variantes de color
   const variants: Record<Variant, string> = {
     primary: `
-      bg-primary/30 hover:bg-primary/40
-      text-primary-foreground
+      bg-primary/50 hover:bg-primary/65
+      text-contrast-foreground
       border-primary/20
-      hover:border-primary/30
+      hover:border-primary/50
     `,
     secondary: `
-      bg-secondary/30 hover:bg-secondary/40
-      text-secondary-foreground
+      bg-secondary/50 hover:bg-secondary/65
+      text-contrast-foreground
       border-secondary/20
-      hover:border-secondary/30
+      hover:border-secondary/50
     `,
     accent: `
-      bg-accent/30 hover:bg-accent/40
+      bg-accent/50 hover:bg-accent/65
       text-accent-foreground
       border-accent/20
-      hover:border-accent/30
+      hover:border-accent/50
     `,
     success: `
-      bg-success/30 hover:bg-success/40
+      bg-success/50 hover:bg-success/65
       text-success-foreground
       border-success/20
-      hover:border-success/30
+      hover:border-success/50
     `,
     error: `
-      bg-error/30 hover:bg-error/40
+      bg-error/50 hover:bg-error/65
       text-error-foreground
       border-error/20
-      hover:border-error/30
+      hover:border-error/50
     `,
     warning: `
-      bg-warning/30 hover:bg-warning/40
+      bg-warning/50 hover:bg-warning/65
       text-warning-foreground
       border-warning/20
-      hover:border-warning/30
+      hover:border-warning/50
     `,
     transparent: `
       bg-transparent
       text-primary-foreground
       border-primary/20
-      hover:border-primary/30
+      hover:border-primary/50
     `,
+    background: `
+      bg-background/50 hover:bg-background/65
+      text-primary-foreground
+      border-primary/20
+      hover:border-primary/50
+      `,
   };
 
   // Configuración de tamaños
@@ -73,6 +79,7 @@ const Button: React.FC<GlassButtonProps> = ({
     sm: "px-3 py-1.5 text-sm",
     md: "px-4 py-2 text-base",
     lg: "px-6 py-3 text-lg",
+    xl: "px-8 py-4 text-xl",
   };
 
   const disabledStyles = disabled
@@ -86,7 +93,7 @@ const Button: React.FC<GlassButtonProps> = ({
       disabled={disabled || loading}
       className={`
         relative
-        rounded-3xl
+        rounded-sm
         backdrop-blur-md
         border
         transition-all
@@ -106,7 +113,7 @@ const Button: React.FC<GlassButtonProps> = ({
       `}
       {...props}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent rounded-3xl pointer-events-none" />
+      {/* <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent rounded-sm pointer-events-none" /> */}
 
       <div className="relative z-10 flex items-center gap-2">
         {loading ? (
@@ -131,7 +138,7 @@ const Button: React.FC<GlassButtonProps> = ({
         {children}
       </div>
 
-      <div className="absolute inset-0 rounded-lg bg-white/0 hover:bg-white/10 transition-colors duration-200 pointer-events-none" />
+      <div className="absolute inset-0 rounded-sm bg-white/0 hover:bg-white/10 transition-colors duration-200 pointer-events-none" />
     </button>
   );
 };

@@ -35,36 +35,49 @@ const Input = forwardRef<HTMLInputElement, GlassInputProps>(
       border-primary/20
       focus:border-primary/50
       placeholder:text-primary-foreground/50
+      hover:border-primary/50
     `,
       secondary: `
       border-secondary/20
       focus:border-secondary/50
       placeholder:text-secondary-foreground/50
+      hover:border-secondary/50
     `,
       accent: `
       border-accent/20
       focus:border-accent/50
       placeholder:text-accent-foreground/50
+      hover:border-accent/50
     `,
       success: `
       border-success/20
       focus:border-success/50
       placeholder:text-success-foreground/50
+      hover:border-success/50
     `,
       error: `
       border-error/20
       focus:border-error/50
       placeholder:text-error-foreground/50
+      hover:border-error/50
     `,
       warning: `
       border-warning/20
       focus:border-warning/50
       placeholder:text-warning-foreground/50
+      hover:border-warning/50
     `,
       transparent: `
         border-transparent
         focus:border-primary/50
         placeholder:text-foreground/50
+        hover:border-primary/50
+    `,
+      background: `
+        border-background/20
+        focus:border-background/50
+        placeholder:text-foreground/50
+        hover:border-background/50
     `,
     };
 
@@ -73,7 +86,7 @@ const Input = forwardRef<HTMLInputElement, GlassInputProps>(
     bg-white/10
     backdrop-blur-md
     border
-    rounded-lg
+    rounded-sm
     py-2
     px-4
     outline-none
@@ -82,7 +95,6 @@ const Input = forwardRef<HTMLInputElement, GlassInputProps>(
     disabled:opacity-50
     disabled:cursor-not-allowed
     placeholder:opacity-50
-    hover:border-white/30
     ${error ? "border-error/50" : variants[variant]}
   `;
 
@@ -140,7 +152,7 @@ const Input = forwardRef<HTMLInputElement, GlassInputProps>(
           )}
 
           {/* Focus Ring Effect */}
-          <div className="absolute inset-0 rounded-lg bg-white/5 opacity-0 transition-opacity duration-200 pointer-events-none peer-focus:opacity-100" />
+          <div className="absolute inset-0 rounded-sm bg-white/5 opacity-0 transition-opacity duration-200 pointer-events-none peer-focus:opacity-100" />
         </div>
 
         {/* Helper Text or Error Message */}

@@ -5,6 +5,7 @@ export type Variant =
   | "success"
   | "error"
   | "warning"
-  | "transparent";
-export type Size = "sm" | "md" | "lg";
+  | "transparent"
+  | "background";
+export type Size = "sm" | "md" | "lg" | "xl";
 export type BlurLevel = "sm" | "md" | "lg" | "xl";

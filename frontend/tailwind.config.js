@@ -29,6 +29,10 @@ export default {
           DEFAULT: "rgba(var(--color-warning-rgb))",
           foreground: "rgba(var(--color-text-rgb))",
         },
+        contrast: {
+          DEFAULT: "rgba(var(--color-info-rgb))",
+          foreground: "rgba(var(--color-text-contrast-rgb))",
+        },
         background: "rgba(var(--color-background-rgb))",
         foreground: "rgba(var(--color-text-rgb))",
       },
