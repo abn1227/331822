@@ -5,9 +5,20 @@ import Container from "../../components/Container";
 import Input from "../../components/Input";
 import MainLayout from "../../layouts/MainLayout";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const LoginView = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    const response = await login(email, password);
+    console.log(response);
+  };
+
   return (
     <MainLayout>
       <Container
@@ -29,12 +40,16 @@ const LoginView = () => {
             fullWidth
             type="email"
             placeholder="example@example.com"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
           />
           <Input
             label="Contraseña"
             fullWidth
             type={passwordVisible ? "text" : "password"}
             placeholder="Any password"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
             rightIcon={
               <div
                 className="cursor-pointer"
@@ -46,7 +61,7 @@ const LoginView = () => {
               </div>
             }
           />
-          <Button variant="primary" className="w-full">
+          <Button variant="primary" className="w-full" onClick={handleLogin}>
             Iniciar Sesión
           </Button>
           <p className="text-center text-sm text-foreground/60">

@@ -3,8 +3,9 @@ import LoginView from "../views/LoginView";
 import LandingView from "../views/LandingView";
 import RegisterView from "../views/RegisterView/index";
 import HandyManManagementView from "../views/HandyManManagementView/index";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-const RouterCutom = () => {
+const RouterCustom = () => {
   const router = createBrowserRouter([
     {
       path: "/",
@@ -28,10 +29,14 @@ const RouterCutom = () => {
     },
     {
       path: "/handyman",
-      element: <HandyManManagementView />,
+      element: (
+        <ProtectedRoute roles={["admin"]}>
+          <HandyManManagementView />
+        </ProtectedRoute>
+      ),
     },
   ]);
   return <RouterProvider router={router} />;
 };
 
-export default RouterCutom;
+export default RouterCustom;

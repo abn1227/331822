@@ -23,7 +23,7 @@ const LandingView = () => {
               childrenClassName="flex flex-col gap-6"
             >
               <h1 className="text-2xl md:text-4xl font-bold text-left">
-                Bienvenido a <span className="text-primary">Servy</span>
+                Bienvenido a <span className="text-accent">Servy</span>
               </h1>
               <p className="text-left text-sm md:text-base text-foreground/60">
                 En Servy ofrecemos una amplia gama de servicios para ayudarte a
