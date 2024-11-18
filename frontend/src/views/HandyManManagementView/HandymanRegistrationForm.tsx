@@ -4,39 +4,13 @@ import Select from "../../components/Select";
 import Button from "../../components/Button";
 import { IHandyMan } from "../../types/handyman";
 import { handymanService } from "@/services/handymanService";
+import { useCategories } from "@/hooks/useCategories";
 
 interface HandymanRegistrationFormProps {
   onSuccess: () => void;
   onCancel: () => void;
   editData?: IHandyMan;
 }
-
-const EXPERTISE_OPTIONS = [
-  { value: "junior", label: "0 - 2 años" },
-  { value: "intermediate", label: "2 - 5 años" },
-  { value: "senior", label: "5 - 10 años" },
-  { value: "expert", label: "Más de 10 años" },
-];
-
-const SERVICES_OPTIONS = [
-  { value: "plumbing", label: "Plomería" },
-  { value: "electrical", label: "Electricidad" },
-  { value: "carpentry", label: "Carpintería" },
-  { value: "painting", label: "Pintura" },
-  { value: "general", label: "Mantenimiento General" },
-  { value: "cleaning", label: "Limpieza" },
-  { value: "hvac", label: "Aire Acondicionado/Calefacción" },
-];
-
-const AVAILABILITY_OPTIONS = [
-  { value: "monday", label: "Lunes" },
-  { value: "tuesday", label: "Martes" },
-  { value: "wednesday", label: "Miércoles" },
-  { value: "thursday", label: "Jueves" },
-  { value: "friday", label: "Viernes" },
-  { value: "saturday", label: "Sábado" },
-  { value: "sunday", label: "Domingo" },
-];
 
 const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
   onSuccess,
@@ -56,6 +30,8 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const { expertise, services, availability } = useCategories();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -141,7 +117,7 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
 
         <Select
           label="Especialidad"
-          options={EXPERTISE_OPTIONS}
+          options={expertise}
           value={formData.expertise}
           onChange={(value) =>
             setFormData({ ...formData, expertise: value as string })
@@ -152,7 +128,7 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
 
         <Select
           label="Servicios Ofrecidos"
-          options={SERVICES_OPTIONS}
+          options={services}
           value={formData.services}
           onChange={(value) =>
             setFormData({ ...formData, services: value as string[] })
@@ -165,7 +141,7 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
 
         <Select
           label="Disponibilidad"
-          options={AVAILABILITY_OPTIONS}
+          options={availability}
           value={formData.availability}
           onChange={(value) =>
             setFormData({ ...formData, availability: value as string[] })

@@ -10,33 +10,8 @@ import { useEffect, useState, useCallback } from "react";
 import { handymanService } from "@/services/handymanService";
 import { IHandyManRecord } from "@/types/handyman";
 import Loader from "@/components/Loader";
-
-const EXPERTISE_OPTIONS = [
-  { value: "junior", label: "0 - 2 años" },
-  { value: "intermediate", label: "2 - 5 años" },
-  { value: "senior", label: "5 - 10 años" },
-  { value: "expert", label: "Más de 10 años" },
-];
-
-const SERVICES_OPTIONS = [
-  { value: "plumbing", label: "Plomería" },
-  { value: "electrical", label: "Electricidad" },
-  { value: "carpentry", label: "Carpintería" },
-  { value: "painting", label: "Pintura" },
-  { value: "general", label: "Mantenimiento General" },
-  { value: "cleaning", label: "Limpieza" },
-  { value: "hvac", label: "Aire Acondicionado/Calefacción" },
-];
-
-const AVAILABILITY_OPTIONS = [
-  { value: "monday", label: "Lunes" },
-  { value: "tuesday", label: "Martes" },
-  { value: "wednesday", label: "Miércoles" },
-  { value: "thursday", label: "Jueves" },
-  { value: "friday", label: "Viernes" },
-  { value: "saturday", label: "Sábado" },
-  { value: "sunday", label: "Domingo" },
-];
+import { useCategories } from "@/hooks/useCategories";
+import { CategoryOption } from "@/types/categories";
 
 const HandymanPage = () => {
   const RESULTS_PER_PAGE = 15;
@@ -51,6 +26,13 @@ const HandymanPage = () => {
     services: [] as string[],
     availability: [] as string[],
   });
+
+  const {
+    expertise,
+    services,
+    availability,
+    loading: categoriesLoading,
+  } = useCategories();
 
   const loadHandymen = useCallback(async () => {
     setLoading(true);
@@ -69,7 +51,9 @@ const HandymanPage = () => {
 
   return (
     <MainLayout>
-      {loading && <Loader fullScreen variant="accent" size="lg" />}
+      {(loading || categoriesLoading) && (
+        <Loader fullScreen variant="accent" size="lg" />
+      )}
       <div className="space-y-6 w-full">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex-1">
@@ -105,7 +89,7 @@ const HandymanPage = () => {
 
             <Select
               label="Expertiz"
-              options={EXPERTISE_OPTIONS}
+              options={expertise}
               value={filters.expertise}
               onChange={(value) =>
                 setFilters({ ...filters, expertise: value as string })
@@ -114,7 +98,7 @@ const HandymanPage = () => {
 
             <Select
               label="Servicios"
-              options={SERVICES_OPTIONS}
+              options={services}
               value={filters.services}
               onChange={(value) =>
                 setFilters({ ...filters, services: value as string[] })
@@ -125,7 +109,7 @@ const HandymanPage = () => {
 
             <Select
               label="Disponibilidad"
-              options={AVAILABILITY_OPTIONS}
+              options={availability}
               value={filters.availability}
               onChange={(value) =>
                 setFilters({ ...filters, availability: value as string[] })
@@ -166,8 +150,9 @@ const HandymanPage = () => {
                     </div>
                     <p className="text-foreground/60 capitalize mb-2 text-center">
                       {
-                        EXPERTISE_OPTIONS.find(
-                          (opt) => opt.value === handyman.expertise
+                        expertise.find(
+                          (opt: CategoryOption) =>
+                            opt.value === handyman.expertise
                         )?.label
                       }
                     </p>
@@ -198,8 +183,8 @@ const HandymanPage = () => {
                           className="px-2 py-1 bg-accent/10 rounded-full text-xs text-nowrap"
                         >
                           {
-                            SERVICES_OPTIONS.find(
-                              (opt) => opt.value === service
+                            services.find(
+                              (opt: CategoryOption) => opt.value === service
                             )?.label
                           }
                         </span>

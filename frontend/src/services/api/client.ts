@@ -1,3 +1,4 @@
+import { StoreManager } from "@/store/storeMananer";
 import { ApiResponse } from "@/types/api";
 
 type ParamValue = string | string[] | number | boolean | undefined;
@@ -20,7 +21,8 @@ export class ApiClient {
   }
 
   private getHeaders(): HeadersInit {
-    const token = localStorage.getItem("token");
+    const token = StoreManager.getAuthToken();
+    console.log("token", token);
     return {
       ...this.defaultHeaders,
       ...(token && { Authorization: `Bearer ${token}` }),
@@ -29,7 +31,6 @@ export class ApiClient {
 
   private async handleResponse<T>(response: Response): Promise<ApiResponse<T>> {
     if (response.status === 401) {
-      localStorage.removeItem("token");
       window.dispatchEvent(new CustomEvent("auth:expired"));
     }
 

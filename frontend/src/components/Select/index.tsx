@@ -313,7 +313,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
                 )}
               </div>
             ) : (
-              <span className="text-foreground/80">
+              <span className="text-foreground/80 text-ellipsis text-nowrap">
                 {options.find((opt) => opt.value === value)?.label ||
                   placeholder}
               </span>
