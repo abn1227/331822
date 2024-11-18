@@ -21,10 +21,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const response = await authService.check();
       setUser(response.data);
-      console.log(response);
       localStorage.setItem("user", JSON.stringify(response.data));
     } catch (error) {
-      console.error(error);
+      setUser({} as LoggedInUser);
+      setToken("");
+      console.log(error)
     } finally {
       setLoading(false);
     }

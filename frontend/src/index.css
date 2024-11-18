@@ -33,3 +33,109 @@ body {
   font-family: "Lato", sans-serif;
   /* font-size: 16px; */
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary-rgb: 7, 72, 93; /* #07485D en RGB */
+  --color-secondary-rgb: 2, 125, 138; /* #027d8a en RGB */
+  --color-accent-rgb: 255, 193, 7; /* #FFC107 en RGB */
+  --color-background-rgb: 254, 254, 254; /* #FEFEFE en RGB */
+  --color-text-rgb: 96, 82, 73; /* #605249 en RGB */
+  --color-text-contrast-rgb: 226, 232, 240; /* #E2E8F0 en RGB */
+  --color-success-rgb: 40, 167, 69; /* #28A745 en RGB */
+  --color-warning-rgb: 255, 193, 7; /* #FFC107 en RGB */
+  --color-error-rgb: 220, 53, 69; /* #DC3545 en RGB */
+}
+
+/* Tema oscuro */
+.dark {
+  --color-primary-rgb: 7, 72, 93; /* #07485D en RGB */
+  --color-secondary-rgb: 2, 125, 138; /* #027d8a en RGB */
+  --color-accent-rgb: 255, 193, 7; /* #FFC107 en RGB */
+  --color-background-rgb: 44, 62, 80; /* #2C3E50 en RGB */
+  --color-text-rgb: 226, 232, 240; /* #E2E8F0 en RGB */
+  --color-text-contrast-rgb: 226, 232, 240; /* #E2E8F0 en RGB */
+  --color-success-rgb: 40, 167, 69; /* #28A745 en RGB */
+  --color-warning-rgb: 255, 193, 7; /* #FFC107 en RGB */
+  --color-error-rgb: 220, 53, 69; /* #DC3545 en RGB */
+}
+
+body {
+  background-color: rgb(var(--color-background-rgb));
+  color: rgb(var(--color-text-rgb));
+  font-family: "Lato", sans-serif;
+}
+
+/* Estilo básico para la scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(var(--color-secondary-rgb), 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-accent-rgb), 0.8);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--color-accent-rgb), 1);
+}
+
+/* Estilo más detallado con soporte para tema oscuro */
+@layer utilities {
+  .custom-scrollbar {
+    scrollbar-width: thin; /* Para Firefox */
+    scrollbar-color: rgba(var(--color-accent-rgb), 0.8) rgba(var(--color-accent-rgb), 0.1); /* Para Firefox */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px; /* Para scrollbars horizontales */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(var(--color-accent-rgb), 0.1);
+    border-radius: 5px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(var(--color-accent-rgb), 0.8);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--color-accent-rgb), 1);
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(var(--color-secondary-rgb), 0.2);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-accent-rgb), 0.7);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--color-accent-rgb), 0.9);
+}
+
+.scrollable-container {
+  @apply custom-scrollbar;
+  max-height: 500px;
+  overflow-y: auto;
+}

@@ -3,10 +3,12 @@ import Input from "../../components/Input";
 import Select from "../../components/Select";
 import Button from "../../components/Button";
 import { IHandyMan } from "../../types/handyman";
+import { handymanService } from "@/services/handymanService";
 
 interface HandymanRegistrationFormProps {
   onSuccess: () => void;
   onCancel: () => void;
+  editData?: IHandyMan;
 }
 
 const EXPERTISE_OPTIONS = [
@@ -22,6 +24,7 @@ const SERVICES_OPTIONS = [
   { value: "carpentry", label: "Carpintería" },
   { value: "painting", label: "Pintura" },
   { value: "general", label: "Mantenimiento General" },
+  { value: "cleaning", label: "Limpieza" },
   { value: "hvac", label: "Aire Acondicionado/Calefacción" },
 ];
 
@@ -38,15 +41,18 @@ const AVAILABILITY_OPTIONS = [
 const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
   onSuccess,
   onCancel,
+  editData,
 }) => {
-  const [formData, setFormData] = useState<IHandyMan>({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    expertise: "",
-    availability: [],
-    services: [],
-  });
+  const [formData, setFormData] = useState<IHandyMan>(
+    editData || {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      expertise: "",
+      availability: [],
+      services: [],
+    }
+  );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -88,9 +94,10 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
 
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      onSuccess();
+      handymanService.create(formData).then(() => {
+        // console.log(response);
+        onSuccess();
+      });
     } catch (error) {
       console.error("Error al registrar:", error);
     } finally {

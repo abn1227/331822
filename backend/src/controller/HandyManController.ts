@@ -70,4 +70,49 @@ export class HandyManController {
       return res.status(500).json({ message: "Internal server error" });
     }
   }
+
+  async getHandyManById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const handyMan = await this.queryHandlers.getHandyMan({
+        id,
+      });
+      res.status(200).json(handyMan);
+      return;
+      // return res.status(200).json(handyMan);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
+
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async list(req: Request, res: Response) {
+    try {
+      const { limit, offset, search, expertise, services, availability } =
+        req.query;
+
+      const handyMen = await this.queryHandlers.listHandyMen(
+        parseInt(limit as string),
+        parseInt(offset as string),
+        {
+          search: search as string,
+          expertise: expertise as string,
+          services: services as string[],
+          availability: availability as string[],
+        }
+      );
+
+      res.status(200).json(handyMen);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
+
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }

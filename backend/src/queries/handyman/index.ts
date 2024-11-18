@@ -1,21 +1,29 @@
-import { IHandyMan } from "@/models/HandyMan";
+import { HandyManFilters, IHandyMan } from "@/models/HandyMan";
 import { HandyManRepository } from "@/repositories/HandyManRepository";
+import { Pagination } from "@/types/commons";
 
-export class GetHandyManByIdQuery {
-  constructor(public readonly id: string) {}
-}
-
-export class GetHandyManByServiceQuery {
-  constructor(public readonly service: string) {}
+export class GetHandyManQuery {
+  constructor(
+    public readonly id?: string,
+    public readonly service?: string
+  ) {}
 }
 
 export class HandyManQueryHandlers {
   constructor(private handyManRepository: HandyManRepository) {}
 
-  async getHandyManById(query: GetHandyManByIdQuery): Promise<IHandyMan> {
-    const { id } = query;
+  async getHandyMan(query: GetHandyManQuery): Promise<IHandyMan> {
+    const { id, service } = query;
 
-    const handyMan = await this.handyManRepository.findById(id);
+    let handyMan: IHandyMan | null = null;
+
+    if (id) {
+      handyMan = await this.handyManRepository.findById(id);
+    }
+
+    if (service) {
+      handyMan = await this.handyManRepository.findByService(service);
+    }
 
     if (!handyMan) {
       throw new Error(`HandyMan not found with id: ${id}`);
@@ -24,16 +32,14 @@ export class HandyManQueryHandlers {
     return handyMan;
   }
 
-  async getHandyManByService(
-    query: GetHandyManByServiceQuery
-  ): Promise<IHandyMan> {
-    const { service } = query;
-
-    const handyMan = await this.handyManRepository.findByService(service);
-    if (!handyMan) {
-      throw new Error(`HandyMan not found with service: ${service}`);
-    }
-
-    return handyMan;
+  async listHandyMen(
+    limit: number = 10,
+    offset: number = 0,
+    filters?: HandyManFilters
+  ): Promise<{
+    data: IHandyMan[];
+    pagination: Pagination;
+  }> {
+    return this.handyManRepository.list(limit, offset, filters);
   }
 }

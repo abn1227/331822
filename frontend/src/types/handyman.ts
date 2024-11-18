@@ -6,3 +6,7 @@ export interface IHandyMan {
   availability: string[];
   services: string[];
 }
+
+export interface IHandyManRecord extends IHandyMan {
+  _id: string;
+}

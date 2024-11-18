@@ -3,10 +3,13 @@ import Card from "../../components/Card";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import Button from "../../components/Button";
-import { Phone, Calendar, Plus, Search } from "lucide-react";
+import { Phone, Calendar, Plus, Search, Pen, Trash } from "lucide-react";
 import Modal from "../../components/Modal";
-import HandymanRegistrationForm from "./HandymanRegistrationForm.tsx";
-import { useState } from "react";
+import HandymanRegistrationForm from "./HandymanRegistrationForm";
+import { useEffect, useState, useCallback } from "react";
+import { handymanService } from "@/services/handymanService";
+import { IHandyManRecord } from "@/types/handyman";
+import Loader from "@/components/Loader";
 
 const EXPERTISE_OPTIONS = [
   { value: "junior", label: "0 - 2 años" },
@@ -21,6 +24,7 @@ const SERVICES_OPTIONS = [
   { value: "carpentry", label: "Carpintería" },
   { value: "painting", label: "Pintura" },
   { value: "general", label: "Mantenimiento General" },
+  { value: "cleaning", label: "Limpieza" },
   { value: "hvac", label: "Aire Acondicionado/Calefacción" },
 ];
 
@@ -34,22 +38,13 @@ const AVAILABILITY_OPTIONS = [
   { value: "sunday", label: "Domingo" },
 ];
 
-const MOCK_HANDYMEN = [
-  {
-    id: "1",
-    firstName: "Juan",
-    lastName: "Pérez",
-    phone: "+1234567890",
-    expertise: "senior",
-    services: ["plumbing", "electrical"],
-    availability: ["monday", "wednesday", "friday"],
-    rating: 4.5,
-    totalJobs: 48,
-  },
-];
-
 const HandymanPage = () => {
+  const RESULTS_PER_PAGE = 15;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [handymenList, setHandymenList] = useState<IHandyManRecord[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [filters, setFilters] = useState({
     search: "",
     expertise: "",
@@ -57,38 +52,24 @@ const HandymanPage = () => {
     availability: [] as string[],
   });
 
-  const handleFiltering = (handymen: typeof MOCK_HANDYMEN) => {
-    return handymen.filter((handyman) => {
-      const matchesSearch =
-        filters.search === "" ||
-        `${handyman.firstName} ${handyman.lastName}`
-          .toLowerCase()
-          .includes(filters.search.toLowerCase());
+  const loadHandymen = useCallback(async () => {
+    setLoading(true);
+    handymanService
+      .list(RESULTS_PER_PAGE, (page - 1) * RESULTS_PER_PAGE, filters)
+      .then((response) => {
+        setHandymenList(response.data);
+        setTotalPages(response?.pagination?.totalPages || 1);
+        setLoading(false);
+      });
+  }, [filters, page]);
 
-      const matchesExpertise =
-        filters.expertise === "" || handyman.expertise === filters.expertise;
-
-      const matchesServices =
-        filters.services.length === 0 ||
-        filters.services.some((service) => handyman.services.includes(service));
-
-      const matchesAvailability =
-        filters.availability.length === 0 ||
-        filters.availability.some((day) => handyman.availability.includes(day));
-
-      return (
-        matchesSearch &&
-        matchesExpertise &&
-        matchesServices &&
-        matchesAvailability
-      );
-    });
-  };
-
-  const filteredHandymen = handleFiltering(MOCK_HANDYMEN);
+  useEffect(() => {
+    loadHandymen();
+  }, [loadHandymen]);
 
   return (
     <MainLayout>
+      {loading && <Loader fullScreen variant="accent" size="lg" />}
       <div className="space-y-6 w-full">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex-1">
@@ -154,15 +135,23 @@ const HandymanPage = () => {
           </div>
         </Card>
 
-        {filteredHandymen.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredHandymen.map((handyman) => (
+        {handymenList.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-80 overflow-y-auto">
+            {handymenList.map((handyman) => (
               <Card
-                key={handyman.id}
+                key={handyman._id}
                 className="hover:shadow-lg transition-shadow duration-200"
                 variant="background"
               >
-                <div className="flex items-start gap-4 p-6">
+                <Trash
+                  size={20}
+                  className="absolute top-2 right-2 cursor-pointer text-error"
+                />
+                <Pen
+                  size={20}
+                  className="absolute top-2 right-8 cursor-pointer text-accent"
+                />
+                <div className="flex items-start gap-4 p-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 justify-between">
                       <div className="rounded-full flex items-center justify-center w-1/2">
@@ -184,12 +173,12 @@ const HandymanPage = () => {
                     </p>
 
                     {/* Stats */}
-                    <div className="flex items-center gap-4 text-sm text-foreground/60 mb-4">
+                    {/* <div className="flex items-center gap-4 text-sm text-foreground/60 mb-4">
                       <span className="flex items-center gap-1">
                         ⭐ {handyman.rating}
                       </span>
                       <span>{handyman.totalJobs} trabajos</span>
-                    </div>
+                    </div> */}
 
                     <div className="space-y-2 text-sm">
                       <p className="flex items-center gap-2">
@@ -202,11 +191,11 @@ const HandymanPage = () => {
                       </p>
                     </div>
 
-                    <div className="mt-4 flex flex-wrap gap-2">
+                    <div className="mt-4 flex flex-wrap gap-2 flex-row">
                       {handyman.services.map((service) => (
                         <span
                           key={service}
-                          className="px-2 py-1 bg-accent/10 rounded-full text-xs"
+                          className="px-2 py-1 bg-accent/10 rounded-full text-xs text-nowrap"
                         >
                           {
                             SERVICES_OPTIONS.find(
@@ -230,6 +219,24 @@ const HandymanPage = () => {
         )}
       </div>
 
+      {/* Paginación */}
+      <div className="flex justify-center gap-4 mt-4">
+        <Button
+          variant="transparent"
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+        >
+          Anterior
+        </Button>
+        <Button
+          variant="transparent"
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+        >
+          Siguiente
+        </Button>
+      </div>
+
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -239,6 +246,7 @@ const HandymanPage = () => {
         <HandymanRegistrationForm
           onSuccess={() => {
             setIsModalOpen(false);
+            loadHandymen();
           }}
           onCancel={() => setIsModalOpen(false)}
         />

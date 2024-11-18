@@ -22,18 +22,16 @@ const MainLayout: React.FC<{
   const getItems = () => {
     if (user.role === "admin") {
       return [
-        { label: "Inicio", href: "/" },
+        { label: "Perfil", href: "/profile" },
         { label: "Gestionar Prestadores de Servicios", href: "/handyman" },
-        { label: "Gestionar Trabajos", href: "/handyman" },
-        { label: "Perfil", href: "/handyman" },
+        { label: "Gestionar Trabajos", href: "#" },
       ];
     }
 
     if (user.role === "user") {
       return [
-        { label: "Inicio", href: "/" },
-        { label: "Mis Peticiones", href: "/handyman" },
-        { label: "Perfil", href: "/handyman" },
+        { label: "Perfil", href: "/profile" },
+        { label: "Mis Peticiones", href: "#" },
       ];
     }
 

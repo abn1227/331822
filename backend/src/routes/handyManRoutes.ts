@@ -2,10 +2,12 @@ import { Router } from "express";
 
 import { HandyManController } from "@/controller/HandyManController";
 import { CreateHandyManDto } from "@/dtos/handyman";
+import { AuthMiddleware } from "@/middlewares/authMiddleware";
 import { validateDto } from "@/middlewares/validateDto";
 
 const router = Router();
 const handyManController = new HandyManController();
+const authMiddleware = new AuthMiddleware();
 
 /**
  * @swagger
@@ -43,6 +45,13 @@ router.post(
   "/",
   validateDto(CreateHandyManDto),
   handyManController.create.bind(handyManController)
+);
+
+router.get(
+  "/",
+  authMiddleware.authenticate,
+  authMiddleware.requireRole(["admin"]),
+  handyManController.list.bind(handyManController)
 );
 
 export default router;

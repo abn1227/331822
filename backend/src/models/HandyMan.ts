@@ -11,6 +11,17 @@ export interface IHandyMan extends Document {
   updatedAt: Date;
 }
 
+export interface HandyManFilters {
+  search?: string;
+  expertise?: string;
+  services?: string[];
+  availability?: string[];
+  dateRange?: {
+    start?: Date;
+    end?: Date;
+  };
+}
+
 const HandyManSchema = new Schema<IHandyMan>(
   {
     firstName: {

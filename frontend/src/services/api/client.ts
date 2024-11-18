@@ -1,5 +1,6 @@
 import { ApiResponse } from "@/types/api";
 
+type ParamValue = string | string[] | number | boolean | undefined;
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message);
@@ -12,11 +13,10 @@ export class ApiClient {
   private defaultHeaders: HeadersInit;
 
   constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+    this.baseUrl = baseUrl || "http://localhost:3000/api/v1";
     this.defaultHeaders = {
       "Content-Type": "application/json",
     };
-    console.log(import.meta.env.VITE_API_BASE_URL);
   }
 
   private getHeaders(): HeadersInit {
@@ -41,20 +41,43 @@ export class ApiClient {
     return {
       data: data.data,
       status: response.status,
+      pagination: data.pagination,
     };
+  }
+
+  private formatQueryParams(
+    params: Record<string, ParamValue>
+  ): URLSearchParams {
+    const searchParams = new URLSearchParams();
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === "") {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        if (value.length === 0) {
+          return;
+        }
+        value.forEach((item) => {
+          searchParams.append(key, item.toString());
+        });
+      } else {
+        searchParams.append(key, value.toString());
+      }
+    });
+
+    return searchParams;
   }
 
   async get<T>(
     path: string,
-    params?: Record<string, string>
+    params?: Record<string, ParamValue>
   ): Promise<ApiResponse<T>> {
     const url = new URL(`${this.baseUrl}${path}`);
     if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined) {
-          url.searchParams.append(key, value);
-        }
-      });
+      const searchParams = this.formatQueryParams(params);
+      url.search = searchParams.toString();
     }
 
     const response = await fetch(url.toString(), {

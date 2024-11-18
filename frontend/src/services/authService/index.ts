@@ -51,7 +51,6 @@ class AuthService {
     const response = await apiClient.get<LoggedInUser>(
       `${this.basePath}/check`
     );
-    console.log(response);
     return response;
   }
 }
