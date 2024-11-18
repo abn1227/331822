@@ -6,9 +6,11 @@ import { config } from "./config";
 import { connection } from "./config/database";
 import { swaggerSpec } from "./config/swagger";
 import authRoutes from "./routes/authRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
 import handyManRoutes from "./routes/handyManRoutes";
 import userRoutes from "./routes/userRoutes";
 import adminSeeder from "./seeders/adminSeeder";
+import categoriesSeeder from "./seeders/categoriesSeeder";
 
 const app = express();
 
@@ -18,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/handyman", handyManRoutes);
 app.use("/api/v1/user", userRoutes);
 
@@ -30,6 +33,7 @@ app.use(
 
 // Seeders
 adminSeeder();
+categoriesSeeder();
 
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);

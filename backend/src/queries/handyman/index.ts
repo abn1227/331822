@@ -9,6 +9,14 @@ export class GetHandyManQuery {
   ) {}
 }
 
+export class ListHandyMenQuery {
+  constructor(
+    public readonly limit?: number,
+    public readonly offset?: number,
+    public readonly filters?: HandyManFilters
+  ) {}
+}
+
 export class HandyManQueryHandlers {
   constructor(private handyManRepository: HandyManRepository) {}
 
@@ -32,14 +40,11 @@ export class HandyManQueryHandlers {
     return handyMan;
   }
 
-  async listHandyMen(
-    limit: number = 10,
-    offset: number = 0,
-    filters?: HandyManFilters
-  ): Promise<{
+  async listHandyMen(query: ListHandyMenQuery): Promise<{
     data: IHandyMan[];
     pagination: Pagination;
   }> {
-    return this.handyManRepository.list(limit, offset, filters);
+    const { limit, offset, filters } = query;
+    return this.handyManRepository.list(limit || 10, offset || 0, filters);
   }
 }

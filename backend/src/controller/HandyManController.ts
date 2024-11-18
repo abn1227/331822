@@ -95,16 +95,16 @@ export class HandyManController {
       const { limit, offset, search, expertise, services, availability } =
         req.query;
 
-      const handyMen = await this.queryHandlers.listHandyMen(
-        parseInt(limit as string),
-        parseInt(offset as string),
-        {
+      const handyMen = await this.queryHandlers.listHandyMen({
+        limit: parseInt(limit as string),
+        offset: parseInt(offset as string),
+        filters: {
           search: search as string,
           expertise: expertise as string,
           services: services as string[],
           availability: availability as string[],
-        }
-      );
+        },
+      });
 
       res.status(200).json(handyMen);
     } catch (error) {
