@@ -1,3 +1,5 @@
+import { Request, Response } from "express";
+
 import { CategoryQueryHandlers } from "@/queries/category";
 import { CategoryRepository } from "@/repositories/CategoryRepository";
 
@@ -9,12 +11,10 @@ export class CategoryController {
     this.queryHandlers = new CategoryQueryHandlers(categoryRepository);
   }
 
-  async list(req: any, res: any) {
+  async list(req: Request, res: Response) {
     try {
       const categories = await this.queryHandlers.listCategories();
-      res.status(200).json({
-        data: categories,
-      });
+      res.status(200).json(categories);
     } catch (error) {
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });

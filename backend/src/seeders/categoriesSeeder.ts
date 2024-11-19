@@ -89,6 +89,27 @@ const categories = [
       },
     ],
   },
+  {
+    type: "jobPetitionStatus",
+    options: [
+      {
+        value: "pending",
+        label: "Pendiente",
+      },
+      {
+        value: "assignated",
+        label: "Asignada",
+      },
+      {
+        value: "rejected",
+        label: "Rechazada",
+      },
+      {
+        value: "completed",
+        label: "Completada",
+      },
+    ],
+  },
 ];
 
 async function categoriesSeeder() {
