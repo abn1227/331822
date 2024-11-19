@@ -4,9 +4,14 @@ import { fetchCategories } from "@/store/slices/categoriesSlice";
 
 export const useCategories = () => {
   const dispatch = useAppDispatch();
-  const { expertise, services, availability, loading, error } = useAppSelector(
-    (state) => state.categories
-  );
+  const {
+    expertise,
+    services,
+    availability,
+    jobPetitionStatus,
+    loading,
+    error,
+  } = useAppSelector((state) => state.categories);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -16,6 +21,7 @@ export const useCategories = () => {
     expertise,
     services,
     availability,
+    jobPetitionStatus,
     loading,
     error,
   };

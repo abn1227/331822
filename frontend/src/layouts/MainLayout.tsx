@@ -31,7 +31,7 @@ const MainLayout: React.FC<{
     if (user.role === "user") {
       return [
         { label: "Perfil", href: "/profile" },
-        { label: "Mis Peticiones", href: "#" },
+        { label: "Mis Peticiones", href: "/my-petitions" },
       ];
     }
 

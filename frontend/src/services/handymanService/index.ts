@@ -42,6 +42,17 @@ class HandyManService {
     );
     return response;
   }
+
+  async update(
+    id: string,
+    data: IHandyManRecord
+  ): Promise<ApiResponse<IHandyManRecord>> {
+    const response = await apiClient.put<IHandyManRecord>(
+      `${this.basePath}/${id}`,
+      data
+    );
+    return response;
+  }
 }
 
 export const handymanService = HandyManService.getInstance();

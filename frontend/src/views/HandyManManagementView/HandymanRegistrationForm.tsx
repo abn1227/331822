@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import Button from "../../components/Button";
-import { IHandyMan } from "../../types/handyman";
+import { IHandyMan, IHandyManRecord } from "../../types/handyman";
 import { handymanService } from "@/services/handymanService";
 import { useCategories } from "@/hooks/useCategories";
 
 interface HandymanRegistrationFormProps {
   onSuccess: () => void;
   onCancel: () => void;
-  editData?: IHandyMan;
+  editData?: IHandyManRecord;
 }
 
 const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
   onSuccess,
   onCancel,
-  editData,
+  editData = null,
 }) => {
-  const [formData, setFormData] = useState<IHandyMan>(
+  const [formData, setFormData] = useState<IHandyMan | IHandyManRecord>(
     editData || {
       firstName: "",
       lastName: "",
@@ -70,10 +70,15 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
 
     setIsLoading(true);
     try {
-      handymanService.create(formData).then(() => {
-        // console.log(response);
-        onSuccess();
-      });
+      if (editData) {
+        handymanService.update(editData._id, formData as IHandyManRecord).then(() => {
+          onSuccess();
+        });
+      } else {
+        handymanService.create(formData).then(() => {
+          onSuccess();
+        });
+      }
     } catch (error) {
       console.error("Error al registrar:", error);
     } finally {

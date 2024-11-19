@@ -1,4 +1,5 @@
-import { CategoryState } from "@/types/categories";
+import { categoryService } from "@/services/categoryService";
+import { CategoryState, ICategoryRecord } from "@/types/categories";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // interface CategoriesResponse {
@@ -32,19 +33,65 @@ const initialState: CategoryState = {
     { value: "saturday", label: "Sábado" },
     { value: "sunday", label: "Domingo" },
   ],
+  jobPetitionStatus: [],
   loading: false,
   error: null,
 };
 
 export const fetchCategories = createAsyncThunk(
   "categories/fetch",
-  async () => {}
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await categoryService.list();
+      return response.data;
+    } catch (error) {
+      console.debug(error);
+      return rejectWithValue("Error al obtener las categorías");
+    }
+  }
 );
 
 const categoriesSlice = createSlice({
   name: "categories",
   initialState,
   reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+
+        if (!action.payload) {
+          return;
+        }
+
+        const expertise = action.payload.find(
+          (category: ICategoryRecord) => category.type === "expertise"
+        );
+        const services = action.payload.find(
+          (category: ICategoryRecord) => category.type === "services"
+        );
+        const availability = action.payload.find(
+          (category: ICategoryRecord) => category.type === "availability"
+        );
+        const jobPetitionStatus = action.payload.find(
+          (category: ICategoryRecord) => category.type === "jobPetitionStatus"
+        );
+
+        state.expertise = expertise?.options || [];
+        state.services = services?.options || [];
+        state.availability = availability?.options || [];
+        state.jobPetitionStatus = jobPetitionStatus?.options || [];
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(fetchCategories.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      });
+  },
 });
 
 export default categoriesSlice.reducer;

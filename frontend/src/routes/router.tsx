@@ -5,6 +5,7 @@ import RegisterView from "../views/RegisterView/index";
 import HandyManManagementView from "../views/HandyManManagementView/index";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ProfileView from "@/views/ProfileView";
+import MyJobPetitionsView from "@/views/MyJobPetitionsView";
 
 const RouterCustom = () => {
   const router = createBrowserRouter([
@@ -41,6 +42,14 @@ const RouterCustom = () => {
       element: (
         <ProtectedRoute>
           <ProfileView />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/my-petitions",
+      element: (
+        <ProtectedRoute>
+          <MyJobPetitionsView />
         </ProtectedRoute>
       ),
     },

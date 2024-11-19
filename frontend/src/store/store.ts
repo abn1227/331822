@@ -15,7 +15,14 @@ const authPersistConfig = {
 const categoriesPersistConfig = {
   key: "categories",
   storage,
-  whitelist: ["expertise", "services", "availability", "loading", "error"],
+  whitelist: [
+    "expertise",
+    "services",
+    "availability",
+    "jobPetitionStatus",
+    "loading",
+    "error",
+  ],
 };
 
 export const store = configureStore({
