@@ -22,7 +22,6 @@ export class ApiClient {
 
   private getHeaders(): HeadersInit {
     const token = StoreManager.getAuthToken();
-    console.log("token", token);
     return {
       ...this.defaultHeaders,
       ...(token && { Authorization: `Bearer ${token}` }),
@@ -40,7 +39,7 @@ export class ApiClient {
 
     const data = await response.json();
     return {
-      data: data.data,
+      data: data,
       status: response.status,
       pagination: data.pagination,
     };

@@ -39,7 +39,7 @@ const HandymanPage = () => {
     handymanService
       .list(RESULTS_PER_PAGE, (page - 1) * RESULTS_PER_PAGE, filters)
       .then((response) => {
-        setHandymenList(response.data);
+        setHandymenList(response.data.data);
         setTotalPages(response?.pagination?.totalPages || 1);
         setLoading(false);
       });

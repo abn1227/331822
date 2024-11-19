@@ -20,7 +20,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to="/login" replace />;
   }
 
-  if (roles && !roles.includes(user.role)) {
+  if (roles.length && !roles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
 

@@ -4,6 +4,7 @@ import LandingView from "../views/LandingView";
 import RegisterView from "../views/RegisterView/index";
 import HandyManManagementView from "../views/HandyManManagementView/index";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ProfileView from "@/views/ProfileView";
 
 const RouterCustom = () => {
   const router = createBrowserRouter([
@@ -32,6 +33,14 @@ const RouterCustom = () => {
       element: (
         <ProtectedRoute roles={["admin"]}>
           <HandyManManagementView />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/profile",
+      element: (
+        <ProtectedRoute>
+          <ProfileView />
         </ProtectedRoute>
       ),
     },

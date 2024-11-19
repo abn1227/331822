@@ -6,17 +6,24 @@ import Input from "../../components/Input";
 import MainLayout from "../../layouts/MainLayout";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { Navigate } from "react-router-dom";
 
 const LoginView = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+
+  if (user && isAuthenticated) {
+    return <Navigate to="/profile" />;
+  }
+
   const { login } = useAuth();
 
   const handleLogin = async () => {
-    const response = await login(email, password);
-    console.log(response);
+    await login(email, password);
   };
 
   return (

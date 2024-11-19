@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/types/api";
+import { ApiResponse, ListResponse } from "@/types/api";
 import { IHandyMan, IHandyManRecord } from "@/types/handyman";
 import { apiClient } from "../api/client";
 import { HandyManFilters } from "../../../../backend/src/models/HandyMan";
@@ -20,8 +20,8 @@ class HandyManService {
     limit: number,
     offset: number,
     filters?: HandyManFilters
-  ): Promise<ApiResponse<IHandyManRecord[]>> {
-    const response = await apiClient.get<IHandyManRecord[]>(
+  ): Promise<ApiResponse<ListResponse<IHandyManRecord>>> {
+    const response = await apiClient.get<ListResponse<IHandyManRecord>>(
       `${this.basePath}/`,
       {
         limit,
