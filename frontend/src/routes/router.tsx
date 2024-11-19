@@ -6,6 +6,8 @@ import HandyManManagementView from "../views/HandyManManagementView/index";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ProfileView from "@/views/ProfileView";
 import MyJobPetitionsView from "@/views/MyJobPetitionsView";
+import JobManagementView from "@/views/JobManagementView";
+import JobManagementDetail from "@/views/JobManagementView/JobManagementDetail";
 
 const RouterCustom = () => {
   const router = createBrowserRouter([
@@ -50,6 +52,22 @@ const RouterCustom = () => {
       element: (
         <ProtectedRoute>
           <MyJobPetitionsView />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/job-petitions",
+      element: (
+        <ProtectedRoute roles={["admin"]}>
+          <JobManagementView />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/job-petitions/:id",
+      element: (
+        <ProtectedRoute roles={["admin"]}>
+          <JobManagementDetail />
         </ProtectedRoute>
       ),
     },

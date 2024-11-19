@@ -27,9 +27,8 @@ class JobPetitionService {
         offset,
         search: filters?.search || "",
         status: filters?.status || "",
-        userId: filters?.userId || "",
-        handyManId: filters?.handyManId || "",
         service: filters?.service || "",
+        availability: filters?.availability || "",
       }
     );
     return response;
@@ -68,13 +67,33 @@ class JobPetitionService {
     return response;
   }
 
+  async getDetailedById(id: string): Promise<ApiResponse<IJobPetitionRecord>> {
+    const response = await apiClient.get<IJobPetitionRecord>(
+      `${this.basePath}/${id}/detailed`
+    );
+    return response;
+  }
+
   async update(
     id: string,
-    data: any
+    data: Partial<IJobPetitionRecord>
   ): Promise<ApiResponse<IJobPetitionRecord>> {
     const response = await apiClient.put<IJobPetitionRecord>(
       `${this.basePath}/${id}`,
       data
+    );
+    return response;
+  }
+
+  async changeStatus(
+    id: string,
+    status: IJobPetitionRecord["status"]
+  ): Promise<ApiResponse<IJobPetitionRecord>> {
+    const response = await apiClient.put<IJobPetitionRecord>(
+      `${this.basePath}/${id}/status`,
+      {
+        status,
+      }
     );
     return response;
   }

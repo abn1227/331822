@@ -24,7 +24,7 @@ const MainLayout: React.FC<{
       return [
         { label: "Perfil", href: "/profile" },
         { label: "Gestionar Prestadores de Servicios", href: "/handyman" },
-        { label: "Gestionar Trabajos", href: "#" },
+        { label: "Gestionar Trabajos", href: "/job-petitions" },
       ];
     }
 

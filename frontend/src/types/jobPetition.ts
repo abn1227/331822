@@ -1,15 +1,18 @@
 export interface IJobPetition {
-  userId: string;
-  handyManId?: string;
-  status: "pending" | "assignated" | "rejected" | "completed";
+  status?: "pending" | "assignated" | "rejected" | "completed";
   description: string;
   service: string;
+  availability: string;
   date: string;
   time: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface IJobPetitionRecord extends IJobPetition {
   _id: string;
+  userId: string;
+  handyManId?: string;
+  userName?: string;
+  handyManName?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -1,27 +1,26 @@
-import { Button, Card, Input, Loader, Modal, Select } from "@/components";
+import { Button, Card, Input, Loader, Select } from "@/components";
 import { useCategories } from "@/hooks/useCategories";
 import MainLayout from "@/layouts/MainLayout";
 import { jobPetitionService } from "@/services/jobPetitionService";
 import { CategoryOption } from "@/types/categories";
 import { IJobPetitionRecord } from "@/types/jobPetition";
-import { Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
-import JobPetitionRegistrationForm from "./JobPetitionsRegistrationForm";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
-const MyJobPetitionsView = () => {
+const JobManagementView = () => {
   const RESULTS_PER_PAGE = 15;
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [myPetitionsList, setMyPetitionsList] = useState<IJobPetitionRecord[]>(
+  const [petitionsList, setMyPetitionsList] = useState<IJobPetitionRecord[]>(
     []
   );
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filters, setFilters] = useState({
     search: "",
-    services: [] as string[],
-    status: "" as string,
+    service: [] as string[],
+    status: [] as string[],
     availability: [] as string[],
   });
 
@@ -39,10 +38,12 @@ const MyJobPetitionsView = () => {
     completed: "text-accent",
   };
 
-  const loadMyPetitions = useCallback(async () => {
+  const navigate = useNavigate();
+
+  const loadPetitions = useCallback(async () => {
     setLoading(true);
     jobPetitionService
-      .listMyPetitions(RESULTS_PER_PAGE, (page - 1) * RESULTS_PER_PAGE, {})
+      .list(RESULTS_PER_PAGE, (page - 1) * RESULTS_PER_PAGE, filters)
       .then((response) => {
         setMyPetitionsList(response.data.data);
         setTotalPages(response?.pagination?.totalPages || 1);
@@ -50,9 +51,25 @@ const MyJobPetitionsView = () => {
       });
   }, [filters, page]);
 
+  const handleAcceptPetition = async (petition: IJobPetitionRecord) => {
+    navigate(`/job-petitions/${petition._id}`);
+  };
+
+  const handleRejectPetition = async (petition: IJobPetitionRecord) => {
+    setLoading(true);
+    await jobPetitionService.changeStatus(petition._id, "rejected");
+    loadPetitions();
+  };
+
+  const handleCompletePetition = async (petition: IJobPetitionRecord) => {
+    setLoading(true);
+    await jobPetitionService.changeStatus(petition._id, "completed");
+    loadPetitions();
+  };
+
   useEffect(() => {
-    loadMyPetitions();
-  }, [loadMyPetitions]);
+    loadPetitions();
+  }, [loadPetitions]);
 
   return (
     <MainLayout>
@@ -61,22 +78,11 @@ const MyJobPetitionsView = () => {
       <div className="space-y-6 w-full">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold mb-2">
-              Mis Peticiones de Servicios
-            </h1>
+            <h1 className="text-2xl font-bold mb-2">Peticiones de Servicios</h1>
             <p className="text-foreground/60">
-              Busca y solicita trabajos de nuestros profesionales.
+              Busca y administras solicitudos de servicios.
             </p>
           </div>
-
-          <Button
-            variant="primary"
-            onClick={() => setIsModalOpen(true)}
-            className="whitespace-nowrap"
-          >
-            <Plus size={20} className="mr-2" />
-            Solicitar Un Servicio
-          </Button>
         </div>
 
         <Card className="p-4" variant="background">
@@ -96,16 +102,17 @@ const MyJobPetitionsView = () => {
               options={jobPetitionStatus}
               value={filters.status}
               onChange={(value) =>
-                setFilters({ ...filters, status: value as string })
+                setFilters({ ...filters, status: value as string[] })
               }
+              multiple
             />
 
             <Select
               label="Servicios"
               options={services}
-              value={filters.services}
+              value={filters.service}
               onChange={(value) =>
-                setFilters({ ...filters, services: value as string[] })
+                setFilters({ ...filters, service: value as string[] })
               }
               multiple
               searchable
@@ -123,10 +130,10 @@ const MyJobPetitionsView = () => {
           </div>
         </Card>
 
-        {myPetitionsList.length > 0 ? (
+        {petitionsList.length > 0 ? (
           <div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-80 overflow-y-auto">
-              {myPetitionsList.map((petition) => (
+              {petitionsList.map((petition) => (
                 <Card
                   key={petition._id}
                   className="hover:shadow-lg transition-shadow duration-200"
@@ -169,7 +176,12 @@ const MyJobPetitionsView = () => {
                           Fecha de solicitud:
                         </p>
                         <p className="text-sm text-foreground/60 font-bold">
-                          {moment(petition.date).format("DD/MM/YYYY")}
+                          {`${moment(petition.date).format("DD/MM/YYYY")} (${
+                            availability.find(
+                              (opt: CategoryOption) =>
+                                opt.value === petition.availability
+                            )?.label
+                          })`}
                         </p>
                       </div>
 
@@ -181,6 +193,46 @@ const MyJobPetitionsView = () => {
                           {petition.time}
                         </p>
                       </div>
+                      {petition.status === "pending" && (
+                        <div className="flex items-center justify-between gap-2 mt-4">
+                          <Button
+                            variant="error"
+                            onClick={() => {
+                              handleRejectPetition(petition);
+                            }}
+                          >
+                            Rechazar
+                          </Button>
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              handleAcceptPetition(petition);
+                            }}
+                          >
+                            Asignar
+                          </Button>
+                        </div>
+                      )}
+                      {petition.status === "assignated" && (
+                        <div className="flex items-center justify-between gap-2 mt-4">
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              handleAcceptPetition(petition);
+                            }}
+                          >
+                            Ver Detalles
+                          </Button>
+                          <Button
+                            variant="success"
+                            onClick={() => {
+                              handleCompletePetition(petition);
+                            }}
+                          >
+                            Completar
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Card>
@@ -211,23 +263,8 @@ const MyJobPetitionsView = () => {
           </Card>
         )}
       </div>
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Solicitar Servicio"
-        variant="background"
-      >
-        <JobPetitionRegistrationForm
-          onSuccess={() => {
-            setIsModalOpen(false);
-            loadMyPetitions();
-          }}
-          onCancel={() => setIsModalOpen(false)}
-        ></JobPetitionRegistrationForm>
-      </Modal>
     </MainLayout>
   );
 };
 
-export default MyJobPetitionsView;
+export default JobManagementView;

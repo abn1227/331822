@@ -1,4 +1,4 @@
-import { ApiResponse, ListResponse } from "@/types/api";
+import { ApiResponse } from "@/types/api";
 import { apiClient } from "../api/client";
 import { ICategoryRecord } from "@/types/categories";
 
