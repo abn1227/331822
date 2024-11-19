@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HandyMan, HandyManFilters, IHandyMan } from "@/models/HandyMan";
 import { Pagination } from "@/types/commons";
 
