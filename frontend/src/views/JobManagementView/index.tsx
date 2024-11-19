@@ -8,6 +8,7 @@ import { Search } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/hooks";
 
 const JobManagementView = () => {
   const RESULTS_PER_PAGE = 15;
@@ -39,6 +40,10 @@ const JobManagementView = () => {
   };
 
   const navigate = useNavigate();
+
+  const { t } = useTranslation({
+    ns: ["jobPetitionManagement", "categories", "common"],
+  });
 
   const loadPetitions = useCallback(async () => {
     setLoading(true);
@@ -78,18 +83,20 @@ const JobManagementView = () => {
       <div className="space-y-6 w-full">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold mb-2">Peticiones de Servicios</h1>
+            <h1 className="text-2xl font-bold mb-2">
+              {t("jobPetitionManagement:title")}
+            </h1>
             <p className="text-foreground/60">
-              Busca y administras solicitudos de servicios.
+              {t("jobPetitionManagement:subtitle")}
             </p>
           </div>
         </div>
 
         <Card className="p-4" variant="background">
-          <p className="text-foreground/60 mb-4">Filtrar por:</p>
+          <p className="text-foreground/60 mb-4">{t("filterBy")}</p>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Input
-              label="Buscar por nombre..."
+              label={t("jobPetitionManagement:searchPlaceholder")}
               leftIcon={<Search size={20} />}
               value={filters.search}
               onChange={(e) =>
@@ -98,8 +105,13 @@ const JobManagementView = () => {
             />
 
             <Select
-              label="Estado"
-              options={jobPetitionStatus}
+              label={t("jobPetitionManagement:status")}
+              options={jobPetitionStatus.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:jobPetitionStatus.${options.value}`),
+                };
+              })}
               value={filters.status}
               onChange={(value) =>
                 setFilters({ ...filters, status: value as string[] })
@@ -108,8 +120,13 @@ const JobManagementView = () => {
             />
 
             <Select
-              label="Servicios"
-              options={services}
+              label={t("jobPetitionManagement:service")}
+              options={services.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:services.${options.value}`),
+                };
+              })}
               value={filters.service}
               onChange={(value) =>
                 setFilters({ ...filters, service: value as string[] })
@@ -119,8 +136,13 @@ const JobManagementView = () => {
             />
 
             <Select
-              label="Día solicitado"
-              options={availability}
+              label={t("jobPetitionManagement:askedDay")}
+              options={availability.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:availability.${options.value}`),
+                };
+              })}
               value={filters.availability}
               onChange={(value) =>
                 setFilters({ ...filters, availability: value as string[] })
@@ -144,12 +166,7 @@ const JobManagementView = () => {
                       <div className="flex items-center gap-2 justify-between">
                         <div className="flex items-center justify-center w-full">
                           <span className="text-xl font-bold text-contrast-foreground bg-primary/80 rounded-xl flex items-center justify-center w-full text-center">
-                            {
-                              services.find(
-                                (service: CategoryOption) =>
-                                  service.value === petition.service
-                              )?.label
-                            }
+                            {t(`categories:services.${petition.service}`)}
                           </span>
                         </div>
                       </div>
@@ -159,12 +176,7 @@ const JobManagementView = () => {
                             statusColor[petition.status]
                           }`}
                         >
-                          {
-                            jobPetitionStatus.find(
-                              (opt: CategoryOption) =>
-                                opt.value === petition.status
-                            )?.label
-                          }
+                          {t(`categories:jobPetitionStatus.${petition.status}`)}
                         </p>
                       )}
                       <h3 className="font-semibold w-full text-justify">
@@ -173,21 +185,18 @@ const JobManagementView = () => {
 
                       <div className="flex items-center gap-2 mt-4">
                         <p className="text-sm text-foreground/60">
-                          Fecha de solicitud:
+                          {t("jobPetitionManagement:askedDay")}:
                         </p>
                         <p className="text-sm text-foreground/60 font-bold">
-                          {`${moment(petition.date).format("DD/MM/YYYY")} (${
-                            availability.find(
-                              (opt: CategoryOption) =>
-                                opt.value === petition.availability
-                            )?.label
-                          })`}
+                          {`${moment(petition.date).format("DD/MM/YYYY")} (${t(
+                            `categories:availability.${petition.availability}`
+                          )})`}
                         </p>
                       </div>
 
                       <div className="flex items-center gap-2 mt-4">
                         <p className="text-sm text-foreground/60">
-                          Hora de solicitud:
+                          {t("jobPetitionManagement:time")}:
                         </p>
                         <p className="text-sm text-foreground/60 font-bold">
                           {petition.time}
@@ -201,7 +210,7 @@ const JobManagementView = () => {
                               handleRejectPetition(petition);
                             }}
                           >
-                            Rechazar
+                            {t("jobPetitionManagement:reject")}
                           </Button>
                           <Button
                             variant="primary"
@@ -209,7 +218,7 @@ const JobManagementView = () => {
                               handleAcceptPetition(petition);
                             }}
                           >
-                            Asignar
+                            {t("jobPetitionManagement:accept")}
                           </Button>
                         </div>
                       )}
@@ -221,7 +230,7 @@ const JobManagementView = () => {
                               handleAcceptPetition(petition);
                             }}
                           >
-                            Ver Detalles
+                            {t("jobPetitionManagement:viewDetails")}
                           </Button>
                           <Button
                             variant="success"
@@ -229,7 +238,7 @@ const JobManagementView = () => {
                               handleCompletePetition(petition);
                             }}
                           >
-                            Completar
+                            {t("jobPetitionManagement:complete")}
                           </Button>
                         </div>
                       )}
@@ -244,21 +253,21 @@ const JobManagementView = () => {
                 disabled={page === 1}
                 onClick={() => setPage(page - 1)}
               >
-                Anterior
+                {t("jobPetitionManagement:previous")}
               </Button>
               <Button
                 variant="transparent"
                 disabled={page === totalPages}
                 onClick={() => setPage(page + 1)}
               >
-                Siguiente
+                {t("jobPetitionManagement:next")}
               </Button>
             </div>
           </div>
         ) : (
           <Card className="p-8 text-center" variant="error">
             <p className="text-foreground/60">
-              No se encontraron peticiones con los filtros seleccionados.
+              {t("jobPetitionManagement:noPetitionsFound")}
             </p>
           </Card>
         )}

@@ -1,17 +1,15 @@
-import MainLayout from "../../layouts/MainLayout";
-import Card from "../../components/Card";
-import Input from "../../components/Input";
-import Select from "../../components/Select";
-import Button from "../../components/Button";
-import { Phone, Calendar, Plus, Search, Pen, Trash } from "lucide-react";
-import Modal from "../../components/Modal";
-import HandymanRegistrationForm from "./HandymanRegistrationForm";
 import { useEffect, useState, useCallback } from "react";
+
+import MainLayout from "@/layouts/MainLayout";
+import { Card, Input, Select, Button, Modal, Loader } from "@/components";
+import { Phone, Calendar, Plus, Search, Pen, Trash } from "lucide-react";
+import { useToast, useTranslation } from "@/hooks";
 import { handymanService } from "@/services/handymanService";
 import { IHandyManRecord } from "@/types/handyman";
-import Loader from "@/components/Loader";
-import { useCategories } from "@/hooks/useCategories";
 import { CategoryOption } from "@/types/categories";
+
+import HandymanRegistrationForm from "./HandymanRegistrationForm";
+import { useCategories } from "@/hooks/useCategories";
 
 const HandymanPage = () => {
   const RESULTS_PER_PAGE = 15;
@@ -37,6 +35,11 @@ const HandymanPage = () => {
     loading: categoriesLoading,
   } = useCategories();
 
+  const { addToast } = useToast();
+  const { t } = useTranslation({
+    ns: ["handyManManagement", "categories"],
+  });
+
   const loadHandymen = useCallback(async () => {
     setLoading(true);
     handymanService
@@ -61,10 +64,10 @@ const HandymanPage = () => {
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex-1">
             <h1 className="text-2xl font-bold mb-2">
-              Registros de Prestadores de Servicios
+              {t("handyManManagement:title")}
             </h1>
             <p className="text-foreground/60">
-              Busca y registra profesionales.
+              {t("handyManManagement:subtitle")}
             </p>
           </div>
 
@@ -77,15 +80,15 @@ const HandymanPage = () => {
             className="whitespace-nowrap"
           >
             <Plus size={20} className="mr-2" />
-            Agregar Profesional
+            {t("handyManManagement:addHandyman")}
           </Button>
         </div>
 
         <Card className="p-4" variant="background">
-          <p className="text-foreground/60 mb-4">Filtrar por:</p>
+          <p className="text-foreground/60 mb-4">{t("filterBy")}</p>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Input
-              label="Buscar por nombre..."
+              label={t("handyManManagement:searchPlaceholder")}
               leftIcon={<Search size={20} />}
               value={filters.search}
               onChange={(e) =>
@@ -94,8 +97,13 @@ const HandymanPage = () => {
             />
 
             <Select
-              label="Expertiz"
-              options={expertise}
+              label={t("handyManManagement:expertise")}
+              options={expertise.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:expertise.${options.value}`),
+                };
+              })}
               value={filters.expertise}
               onChange={(value) =>
                 setFilters({ ...filters, expertise: value as string })
@@ -103,8 +111,13 @@ const HandymanPage = () => {
             />
 
             <Select
-              label="Servicios"
-              options={services}
+              label={t("handyManManagement:services")}
+              options={services.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:services.${options.value}`),
+                };
+              })}
               value={filters.services}
               onChange={(value) =>
                 setFilters({ ...filters, services: value as string[] })
@@ -114,8 +127,13 @@ const HandymanPage = () => {
             />
 
             <Select
-              label="Disponibilidad"
-              options={availability}
+              label={t("handyManManagement:availability")}
+              options={availability.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:availability.${options.value}`),
+                };
+              })}
               value={filters.availability}
               onChange={(value) =>
                 setFilters({ ...filters, availability: value as string[] })
@@ -160,15 +178,10 @@ const HandymanPage = () => {
                         </h3>
                       </div>
                       <p className="text-foreground/60 capitalize mb-2 text-center text-sm">
-                        Experiencia:
+                        {t("handyManManagement:expertise")}:
                       </p>
                       <p className="text-foreground/60 capitalize mb-2 text-center">
-                        {
-                          expertise.find(
-                            (opt: CategoryOption) =>
-                              opt.value === handyman.expertise
-                          )?.label
-                        }
+                        {t(`categories:expertise.${handyman.expertise}`)}
                       </p>
 
                       {/* Stats */}
@@ -186,7 +199,8 @@ const HandymanPage = () => {
                         </p>
                         <p className="flex items-center gap-2">
                           <Calendar size={16} />
-                          {handyman.availability.length} días disponibles
+                          {handyman.availability.length}{" "}
+                          {t("handyManManagement:daysAvailable")}
                         </p>
                       </div>
 
@@ -196,11 +210,7 @@ const HandymanPage = () => {
                             key={service}
                             className="px-2 py-1 bg-accent/10 rounded-full text-xs text-nowrap"
                           >
-                            {
-                              services.find(
-                                (opt: CategoryOption) => opt.value === service
-                              )?.label
-                            }
+                            {t(`categories:services.${service}`)}
                           </span>
                         ))}
                       </div>
@@ -215,21 +225,21 @@ const HandymanPage = () => {
                 disabled={page === 1}
                 onClick={() => setPage(page - 1)}
               >
-                Anterior
+                {t("handyManManagement:previous")}
               </Button>
               <Button
                 variant="transparent"
                 disabled={page === totalPages}
                 onClick={() => setPage(page + 1)}
               >
-                Siguiente
+                {t("handyManManagement:next")}
               </Button>
             </div>
           </>
         ) : (
           <Card className="p-8 text-center" variant="error">
             <p className="text-foreground/60">
-              No se encontraron profesionales con los filtros seleccionados.
+              {t("handyManManagement:noHandymansFound")}
             </p>
           </Card>
         )}
@@ -238,7 +248,11 @@ const HandymanPage = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editData ? "Editar Profesional" : "Registro de Profesional"}
+        title={
+          editData
+            ? t("handyManManagement:editHandyman")
+            : t("handyManManagement:createHandyman")
+        }
         variant="background"
       >
         <HandymanRegistrationForm
@@ -246,6 +260,10 @@ const HandymanPage = () => {
             setEditData(undefined);
             setIsModalOpen(false);
             loadHandymen();
+            addToast({
+              type: "success",
+              message: t("handyManManagement:handymanRegisteredSuccessfully"),
+            });
           }}
           onCancel={() => setIsModalOpen(false)}
           editData={editData}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon, ChevronDown } from "lucide-react";
 import { useTheme } from "../../hooks/useTheme";
+import ToggleLanguageButton from "../ToggleLanguageButton";
+import { useTranslation } from "@/hooks";
 
 interface NavItem {
   label: string;
@@ -32,6 +34,10 @@ const Navbar: React.FC<NavbarProps> = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const { t } = useTranslation({
+    ns: "navbar",
+  });
 
   // Componente Dropdown para submenús
   const Dropdown: React.FC<{ item: NavItem }> = ({ item }) => {
@@ -133,10 +139,12 @@ const Navbar: React.FC<NavbarProps> = ({
                 <Moon className="w-5 h-5" />
               )}
             </button>
+            <ToggleLanguageButton />
           </div>
 
           {/* Botón menú móvil */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-4">
+            <ToggleLanguageButton />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-lg hover:bg-white/10 transition-all"
@@ -181,8 +189,8 @@ const Navbar: React.FC<NavbarProps> = ({
             className="w-full text-left py-2 px-3 rounded-lg hover:bg-white/10 transition-all"
           >
             {theme === "light"
-              ? "Cambiar a modo oscuro"
-              : "Cambiar a modo claro"}
+              ? t("navbar:options.darkMode")
+              : t("navbar:options.lightMode")}
           </button>
         </div>
       </div>

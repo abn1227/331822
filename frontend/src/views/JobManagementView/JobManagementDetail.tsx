@@ -1,9 +1,8 @@
 import { Button, Loader, Select } from "@/components";
-import { useCategories } from "@/hooks/useCategories";
+import { useTranslation } from "@/hooks";
 import MainLayout from "@/layouts/MainLayout";
 import { handymanService } from "@/services/handymanService";
 import { jobPetitionService } from "@/services/jobPetitionService";
-import { CategoryOption } from "@/types/categories";
 import { IHandyManRecord } from "@/types/handyman";
 import { IJobPetitionRecord } from "@/types/jobPetition";
 import moment from "moment";
@@ -17,7 +16,9 @@ const JobManagementDetail = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { services, jobPetitionStatus, availability } = useCategories();
+  const { t } = useTranslation({
+    ns: ["jobPetitionManagement", "categories", "common"],
+  });
 
   useEffect(() => {
     if (id) {
@@ -70,35 +71,36 @@ const JobManagementDetail = () => {
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex-1">
             <h1 className="text-2xl font-bold mb-2">
-              Detalle de Petición de Servicio
+              {t("jobPetitionManagement:jobPetitionDetails")}
             </h1>
           </div>
         </div>
         {petition && (
           <div className="grid grid-cols-1 gap-2 max-h-96 overflow-y-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-              <p className="text-foreground/60 mb-1 md:mb-4">Solicitante:</p>
+              <p className="text-foreground/60 mb-1 md:mb-4">
+                {t("jobPetitionManagement:requestedBy")}:
+              </p>
               <p className="text-foreground">{petition.userName}</p>
             </div>
 
             <hr className="border-secondary/20 my-1" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-              <p className="text-foreground/60 mb-1 md:mb-4">Servicio:</p>
+              <p className="text-foreground/60 mb-1 md:mb-4">
+                {t("jobPetitionManagement:service")}:
+              </p>
               <p className="text-foreground">
-                {
-                  services.find(
-                    (service: CategoryOption) =>
-                      service.value === petition.service
-                  )?.label
-                }
+                {t(`categories:services.${petition.service}`)}
               </p>
             </div>
 
             <hr className="border-secondary/20 my-1" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-              <p className="text-foreground/60 mb-1 md:mb-4">Descripción:</p>
+              <p className="text-foreground/60 mb-1 md:mb-4">
+                {t("jobPetitionManagement:description")}:
+              </p>
               <p className="text-foreground">{petition.description}</p>
             </div>
 
@@ -106,14 +108,12 @@ const JobManagementDetail = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
               <p className="text-foreground/60 mb-1 md:mb-4">
-                Fecha de solicitud:
+                {t("jobPetitionManagement:askedDay")}:
               </p>
               <p className="text-foreground">
-                {`${moment(petition.date).format("DD/MM/YYYY")} (${
-                  availability.find(
-                    (opt: CategoryOption) => opt.value === petition.availability
-                  )?.label
-                })`}
+                {`${moment(petition.date).format("DD/MM/YYYY")} (${t(
+                  `categories:availability.${petition.availability}`
+                )})`}
               </p>
             </div>
 
@@ -121,7 +121,7 @@ const JobManagementDetail = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
               <p className="text-foreground/60 mb-1 md:mb-4">
-                Hora de solicitud:
+                {t("jobPetitionManagement:time")}:
               </p>
               <p className="text-foreground">{petition.time}</p>
             </div>
@@ -129,7 +129,9 @@ const JobManagementDetail = () => {
             <hr className="border-secondary/20 my-2 w-full" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-              <p className="text-foreground/60 mb-1 md:mb-4">Estado:</p>
+              <p className="text-foreground/60 mb-1 md:mb-4">
+                {t("jobPetitionManagement:status")}:
+              </p>
               <p
                 className={`${
                   petition.status
@@ -137,11 +139,7 @@ const JobManagementDetail = () => {
                     : "text-foreground"
                 }`}
               >
-                {
-                  jobPetitionStatus.find(
-                    (opt: CategoryOption) => opt.value === petition.status
-                  )?.label
-                }
+                {t(`categories:jobPetitionStatus.${petition.status}`)}
               </p>
             </div>
 
@@ -150,7 +148,7 @@ const JobManagementDetail = () => {
             {handyManList.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
                 <p className="text-foreground/60 mb-1 md:mb-4">
-                  Profesional de Atención:
+                  {t("jobPetitionManagement:handyman")}:
                 </p>
                 <Select
                   options={handyManList.map((handyMan) => {
@@ -168,10 +166,10 @@ const JobManagementDetail = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
                 <p className="text-foreground/60 mb-1 md:mb-4">
-                  Profesional de Atención:
+                  {t("jobPetitionManagement:handyman")}:
                 </p>
                 <p className="text-foreground">
-                  No se encontraron profesionales
+                  {t("jobPetitionManagement:noHandyman")}
                 </p>
               </div>
             )}
@@ -184,7 +182,7 @@ const JobManagementDetail = () => {
             disabled={loading}
             onClick={() => navigate("/job-petitions")}
           >
-            Volver
+            {t("common:buttons.back")}
           </Button>
         </div>
       </div>

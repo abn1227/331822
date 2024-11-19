@@ -9,7 +9,7 @@ import {
 } from "@/store/slices/authSlice";
 import { useEffect } from "react";
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const dispatch = useAppDispatch();
@@ -50,3 +50,5 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     </AuthContext.Provider>
   );
 };
+
+export default AuthProvider;

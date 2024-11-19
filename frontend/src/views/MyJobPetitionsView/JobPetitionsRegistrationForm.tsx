@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Input from "../../components/Input";
-import Select from "../../components/Select";
-import Button from "../../components/Button";
-import { useCategories } from "@/hooks/useCategories";
+import { Input, Select, Button } from "@/components";
 import { IJobPetition, IJobPetitionRecord } from "@/types/jobPetition";
 import { jobPetitionService } from "@/services/jobPetitionService";
 import { DatePicker, TimePicker } from "@/components";
+import { useToast } from "@/hooks";
+import { useCategories } from "@/hooks/useCategories";
 
 interface JobPetitionRegistrationForm {
   onSuccess: () => void;
@@ -35,6 +34,7 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const { services } = useCategories();
+  const { addToast } = useToast();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -75,12 +75,24 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
             onSuccess();
           });
       } else {
-        jobPetitionService.create(formData).then(() => {
-          onSuccess();
-        });
+        jobPetitionService
+          .create(formData)
+          .then(() => {
+            onSuccess();
+          })
+          .catch((error) => {
+            const messageParsed = JSON.parse(error.message);
+            addToast({
+              type: "error",
+              message: messageParsed.message,
+            });
+          });
       }
     } catch (error) {
-      console.error("Error al registrar:", error);
+      addToast({
+        type: "error",
+        message: "Error al registrar petición de servicio",
+      });
     } finally {
       setIsLoading(false);
     }

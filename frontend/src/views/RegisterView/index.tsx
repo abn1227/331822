@@ -1,12 +1,9 @@
 import { useState } from "react";
-import Button from "../../components/Button";
-import Card from "../../components/Card";
-import Container from "../../components/Container";
-import Input from "../../components/Input";
+import { Button, Card, Container, Input } from "@/components";
 import MainLayout from "../../layouts/MainLayout";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks";
 import { Eye, EyeOff } from "lucide-react";
 
 const RegisterView = () => {

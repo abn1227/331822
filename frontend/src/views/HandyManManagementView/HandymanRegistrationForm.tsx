@@ -5,6 +5,8 @@ import Button from "../../components/Button";
 import { IHandyMan, IHandyManRecord } from "../../types/handyman";
 import { handymanService } from "@/services/handymanService";
 import { useCategories } from "@/hooks/useCategories";
+import { useTranslation } from "@/hooks";
+import { CategoryOption } from "@/types/categories";
 
 interface HandymanRegistrationFormProps {
   onSuccess: () => void;
@@ -32,29 +34,32 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const { expertise, services, availability } = useCategories();
+  const { t } = useTranslation({
+    ns: ["handyManManagement", "categories", "common"],
+  });
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.firstName.trim()) {
-      newErrors.firstName = "El nombre es requerido";
+      newErrors.firstName = t("common:validation.required");
     }
     if (!formData.lastName.trim()) {
-      newErrors.lastName = "El apellido es requerido";
+      newErrors.lastName = t("common:validation.required");
     }
     if (!formData.phone.trim()) {
-      newErrors.phone = "El teléfono es requerido";
+      newErrors.phone = t("common:validation.required");
     } else if (!/^\+?[\d\s-]{10,}$/.test(formData.phone)) {
-      newErrors.phone = "Número de teléfono inválido";
+      newErrors.phone = t("common:validation.phone");
     }
     if (!formData.expertise) {
-      newErrors.expertise = "Seleccione una especialidad";
+      newErrors.expertise = t("common:validation.required");
     }
     if (formData.availability.length === 0) {
-      newErrors.availability = "Seleccione al menos un día de disponibilidad";
+      newErrors.availability = t("common:validation.required");
     }
     if (formData.services.length === 0) {
-      newErrors.services = "Seleccione al menos un servicio";
+      newErrors.services = t("common:validation.required");
     }
 
     setErrors(newErrors);
@@ -71,9 +76,14 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
     setIsLoading(true);
     try {
       if (editData) {
-        handymanService.update(editData._id, formData as IHandyManRecord).then(() => {
-          onSuccess();
-        });
+        handymanService
+          .update(editData._id, formData as IHandyManRecord)
+          .then(() => {
+            onSuccess();
+          })
+          .catch((error) => {
+            console.error("Error al actualizar:", error);
+          });
       } else {
         handymanService.create(formData).then(() => {
           onSuccess();
@@ -90,39 +100,41 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
         <Input
-          label="Nombre"
+          label={t("handyManManagement:firstName")}
           value={formData.firstName}
           onChange={(e) =>
             setFormData({ ...formData, firstName: e.target.value })
           }
           error={errors.firstName}
-          placeholder="Juan"
           required
         />
 
         <Input
-          label="Apellido"
+          label={t("handyManManagement:lastName")}
           value={formData.lastName}
           onChange={(e) =>
             setFormData({ ...formData, lastName: e.target.value })
           }
           error={errors.lastName}
-          placeholder="Pérez"
           required
         />
 
         <Input
-          label="Teléfono"
+          label={t("handyManManagement:phone")}
           value={formData.phone}
           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
           error={errors.phone}
           required
-          placeholder="+1234567890"
         />
 
         <Select
-          label="Especialidad"
-          options={expertise}
+          label={t("handyManManagement:expertise")}
+          options={expertise.map((options: CategoryOption) => {
+            return {
+              value: options.value,
+              label: t(`categories:expertise.${options.value}`),
+            };
+          })}
           value={formData.expertise}
           onChange={(value) =>
             setFormData({ ...formData, expertise: value as string })
@@ -132,8 +144,13 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
         />
 
         <Select
-          label="Servicios Ofrecidos"
-          options={services}
+          label={t("handyManManagement:services")}
+          options={services.map((options: CategoryOption) => {
+            return {
+              value: options.value,
+              label: t(`categories:services.${options.value}`),
+            };
+          })}
           value={formData.services}
           onChange={(value) =>
             setFormData({ ...formData, services: value as string[] })
@@ -145,8 +162,13 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
         />
 
         <Select
-          label="Disponibilidad"
-          options={availability}
+          label={t("handyManManagement:availability")}
+          options={availability.map((options: CategoryOption) => {
+            return {
+              value: options.value,
+              label: t(`categories:availability.${options.value}`),
+            };
+          })}
           value={formData.availability}
           onChange={(value) =>
             setFormData({ ...formData, availability: value as string[] })
@@ -164,10 +186,10 @@ const HandymanRegistrationForm: React.FC<HandymanRegistrationFormProps> = ({
           onClick={onCancel}
           disabled={isLoading}
         >
-          Cancelar
+          {t("common:buttons.cancel")}
         </Button>
         <Button variant="primary" type="submit" loading={isLoading}>
-          Registrar
+          {t("common:buttons.save")}
         </Button>
       </div>
     </form>
