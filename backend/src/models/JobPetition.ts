@@ -13,12 +13,17 @@ export interface IJobPetition extends Document {
   updatedAt: Date;
 }
 
+export interface IJobPetitionDetailed extends IJobPetition {
+  userName?: string;
+  handyManName?: string;
+}
+
 export interface JobPetitionFilters {
   search?: string;
-  status?: string;
-  userId?: string;
-  handyManId?: string;
-  service?: string;
+  status?: string[];
+  userId?: string[];
+  handyManId?: string[];
+  service?: string[];
   dateRange?: {
     start?: Date;
     end?: Date;

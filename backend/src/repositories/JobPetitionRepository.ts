@@ -44,20 +44,20 @@ export class JobPetitionRepository {
         ];
       }
 
-      if (filters.status) {
-        query.status = { $eq: filters.status };
+      if (filters.status?.length) {
+        query.status = { $in: filters.status };
       }
 
-      if (filters.userId) {
-        query.userId = { $eq: filters.userId };
+      if (filters.userId?.length) {
+        query.userId = { $in: filters.userId };
       }
 
-      if (filters.handyManId) {
-        query.handyManId = { $eq: filters.handyManId };
+      if (filters.handyManId?.length) {
+        query.handyManId = { $in: filters.handyManId };
       }
 
-      if (filters.service) {
-        query.service = { $eq: filters.service };
+      if (filters.service?.length) {
+        query.service = { $in: filters.service };
       }
 
       if (filters.dateRange?.start || filters.dateRange?.end) {

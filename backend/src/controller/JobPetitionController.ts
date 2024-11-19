@@ -6,7 +6,9 @@ import {
   UpdateJobPetitionCommand,
 } from "@/commands/jobPetition";
 import { JobPetitionQueryHandlers } from "@/queries/jobPetition";
+import { HandyManRepository } from "@/repositories/HandyManRepository";
 import { JobPetitionRepository } from "@/repositories/JobPetitionRepository";
+import { UserRepository } from "@/repositories/UserRepository";
 
 export class JobPetitionController {
   private commandHandlers: JobPetitionCommandHandlers;
@@ -14,10 +16,16 @@ export class JobPetitionController {
 
   constructor() {
     const jobPetitionRepository = new JobPetitionRepository();
+    const userRepository = new UserRepository();
+    const handyManRepository = new HandyManRepository();
     this.commandHandlers = new JobPetitionCommandHandlers(
       jobPetitionRepository
     );
-    this.queryHandlers = new JobPetitionQueryHandlers(jobPetitionRepository);
+    this.queryHandlers = new JobPetitionQueryHandlers(
+      jobPetitionRepository,
+      userRepository,
+      handyManRepository
+    );
   }
 
   async create(req: Request, res: Response) {
@@ -31,6 +39,7 @@ export class JobPetitionController {
       const command = new CreateJobPetitionCommand({
         ...createJobPetitionDto,
         userId: req.user.id,
+        status: "pending",
       });
 
       const jobPetition = await this.commandHandlers.createJobPetition(command);
@@ -126,6 +135,26 @@ export class JobPetitionController {
       const jobPetition = await this.queryHandlers.getJobPetition({
         id,
       });
+
+      res.status(200).json(jobPetition);
+      return;
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
+
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async getDetailedJobPetition(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const jobPetition = await this.queryHandlers.getDetailedJobPetition({
+        id,
+      });
+
       res.status(200).json(jobPetition);
       return;
     } catch (error) {
@@ -147,10 +176,10 @@ export class JobPetitionController {
         offset: parseInt(offset as string),
         filters: {
           search: search as string,
-          status: status as string,
-          userId: userId as string,
-          handyManId: handyManId as string,
-          service: service as string,
+          status: status as string[],
+          userId: userId as string[],
+          handyManId: handyManId as string[],
+          service: service as string[],
         },
       });
 
@@ -179,9 +208,9 @@ export class JobPetitionController {
         offset: parseInt(offset as string),
         filters: {
           search: search as string,
-          status: status as string,
-          service: service as string,
-          userId,
+          status: status as string[],
+          service: service as string[],
+          userId: [userId],
         },
       });
 

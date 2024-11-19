@@ -11,7 +11,6 @@ const authMiddleware = new AuthMiddleware();
 router.post(
   "/",
   authMiddleware.authenticate,
-  authMiddleware.requireRole(["admin"]),
   jobPetitionController.create.bind(jobPetitionController)
 );
 
@@ -23,9 +22,24 @@ router.get(
 );
 
 router.get(
+  "/",
+  authMiddleware.authenticate,
+  authMiddleware.requireRole(["admin"]),
+  jobPetitionController.list.bind(jobPetitionController)
+);
+
+router.get(
   "/:id",
   authMiddleware.authenticate,
+  authMiddleware.requireRole(["admin"]),
   jobPetitionController.getJobPetitionById.bind(jobPetitionController)
+);
+
+router.get(
+  "/:id/detailed",
+  authMiddleware.authenticate,
+  authMiddleware.requireRole(["admin"]),
+  jobPetitionController.getDetailedJobPetition.bind(jobPetitionController)
 );
 
 router.put(

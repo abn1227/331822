@@ -19,17 +19,26 @@ export class JobPetitionCommandHandlers {
   async createJobPetition(
     command: CreateJobPetitionCommand
   ): Promise<IJobPetition> {
-    const { userId, handyManId, status, description, service, date, time } =
-      command.data;
+    const {
+      userId,
+      handyManId,
+      status,
+      description,
+      service,
+      date,
+      availability,
+      time,
+    } = command.data;
 
-    const existentJobPetition =
-      await this.jobPetitionRepository.findByServiceAndUser(service, userId);
+    const existentJobPetition = await this.jobPetitionRepository.list(100, 0, {
+      status: ["pending"],
+      userId: [userId],
+      service: [service],
+    });
 
-    if (existentJobPetition) {
+    if (existentJobPetition.data.length > 0) {
       throw new Error("There is a petition of this service already created");
     }
-
-    const availabilityDay = date.split("-")[2];
 
     const jobPetition = await this.jobPetitionRepository.create({
       userId,
@@ -37,7 +46,7 @@ export class JobPetitionCommandHandlers {
       status,
       description,
       service,
-      availability: availabilityDay,
+      availability,
       date: new Date(date),
       time,
     });

@@ -45,6 +45,9 @@ export class CreateJobPetitionDto {
   description: string;
 
   @IsString()
+  availability: string;
+
+  @IsString()
   service: string;
 
   @IsString()
@@ -76,6 +79,9 @@ export class CreateJobPetitionDto {
 export class UpdateJobPetitionDto {
   @IsString()
   handyManId?: string;
+
+  @IsString()
+  handyManName?: string;
 
   @IsString()
   status?: "pending" | "assignated" | "rejected" | "completed";
