@@ -20,7 +20,7 @@ const authMiddleware = new AuthMiddleware();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateHandyManRequest'
+ *             $ref: '#/components/schemas/CreateHandyManDto'
  *     responses:
  *       201:
  *         description: Handyman created successfully
@@ -47,6 +47,75 @@ router.post(
   handyManController.create.bind(handyManController)
 );
 
+/**
+ * @swagger
+ * /handyman:
+ *   get:
+ *     summary: List handymans
+ *     tags: [HandyMan]
+ *     parameters:
+ *       - name: limit
+ *         in: query
+ *         description: Number of items per page
+ *         required: false
+ *         schema:
+ *           type: number
+ *           default: 10
+ *       - name: offset
+ *         in: query
+ *         description: Number of items to skip
+ *         required: false
+ *         schema:
+ *           type: number
+ *           default: 0
+ *       - name: search
+ *         in: query
+ *         description: Search by name
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: expertise
+ *         in: query
+ *         description: Search by expertise
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: services
+ *         in: query
+ *         description: Search by services
+ *         required: false
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *       - name: availability
+ *         in: query
+ *         description: Search by availability
+ *         required: false
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *     responses:
+ *       200:
+ *         description: Handymans list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/HandymanListResponse'
+ *       400:
+ *         description: Invalid request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */ 
 router.get(
   "/",
   authMiddleware.authenticate,

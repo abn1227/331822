@@ -9,8 +9,8 @@ const options: swaggerJsdoc.Options = {
         description: "Authentication endpoints",
       },
       {
-        name: "Users",
-        description: "User management endpoints",
+        name: "HandyMan",
+        description: "Handyman management endpoints",
       },
     ],
     info: {
@@ -53,108 +53,10 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
-        User: {
-          type: "object",
-          required: ["email", "name"],
-          properties: {
-            id: {
-              type: "string",
-              description: "User ID",
-            },
-            email: {
-              type: "string",
-              format: "email",
-              description: "User email",
-            },
-            name: {
-              type: "string",
-              description: "User name",
-            },
-            role: {
-              type: "string",
-              enum: ["admin", "user"],
-              description: "User role",
-            },
-          },
-        },
-        CreateUserRequest: {
-          type: "object",
-          required: ["name", "email", "password", "role"],
-          properties: {
-            name: {
-              type: "string",
-              description: "User name",
-            },
-            email: {
-              type: "string",
-              format: "email",
-              description: "User email",
-            },
-            password: {
-              type: "string",
-              format: "password",
-              description: "User password",
-            },
-            role: {
-              type: "string",
-              enum: ["admin", "user"],
-              description: "User role",
-            },
-          },
-        },
-        CreateUserResponse: {
-          type: "object",
-          allOf: [
-            {
-              $ref: "#/components/schemas/CreateUserRequest",
-            },
-            {
-              properties: {
-                _id: {
-                  type: "string",
-                  description: "User ID",
-                },
-                createdAt: {
-                  type: "string",
-                  format: "date-time",
-                },
-                updatedAt: {
-                  type: "string",
-                  format: "date-time",
-                },
-              },
-            },
-          ],
-        },
-        LoginRequest: {
-          type: "object",
-          required: ["email", "password"],
-          properties: {
-            email: {
-              type: "string",
-              format: "email",
-            },
-            password: {
-              type: "string",
-              format: "password",
-            },
-          },
-        },
-        LoginResponse: {
-          type: "object",
-          properties: {
-            user: {
-              $ref: "#/components/schemas/User",
-            },
-            token: {
-              type: "string",
-            },
-          },
-        },
       },
     },
   },
-  apis: ["./src/routes/*.ts", "./src/controllers/*.ts"], // archivos a escanear
+  apis: ["./src/dtos/**/*.ts", "./src/routes/*.ts", "./src/controllers/*.ts"], // archivos a escanear
 };
 
 export const swaggerSpec = swaggerJsdoc(options);

@@ -8,7 +8,7 @@ import { swaggerSpec } from "./config/swagger";
 import authRoutes from "./routes/authRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
 import handyManRoutes from "./routes/handyManRoutes";
-import userRoutes from "./routes/userRoutes";
+// import userRoutes from "./routes/userRoutes";
 import adminSeeder from "./seeders/adminSeeder";
 import categoriesSeeder from "./seeders/categoriesSeeder";
 
@@ -22,7 +22,7 @@ app.use(cors());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/handyman", handyManRoutes);
-app.use("/api/v1/user", userRoutes);
+// app.use("/api/v1/user", userRoutes);
 
 // Swagger Docs
 app.use(

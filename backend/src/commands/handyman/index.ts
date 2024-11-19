@@ -33,7 +33,7 @@ export class HandyManCommandHandlers {
       services,
     });
 
-    return handyMan.id;
+    return handyMan;
   }
 
   async updateHandyMan(command: UpdateHandyManCommand): Promise<IHandyMan> {

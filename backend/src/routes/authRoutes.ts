@@ -20,14 +20,14 @@ const authMiddleware = new AuthMiddleware();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/LoginRequest'
+ *             $ref: '#/components/schemas/LoginDto'
  *     responses:
  *       200:
  *         description: Login successful
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/LoginResponse'
+ *               $ref: '#/components/schemas/AuthResponse'
  *       400:
  *         description: Invalid credentials
  *         content:
@@ -47,12 +47,71 @@ router.post(
   authController.login.bind(authController)
 );
 
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterDto'
+ *     responses:
+ *       200:
+ *         description: Registration successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       400:
+ *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'    
+ */
 router.post(
   "/register",
   validateDto(RegisterDto),
   authController.register.bind(authController)
 );
 
+/**
+ * @swagger
+ * /auth/check:
+ *   get:
+ *     summary: Check user
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: User details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CheckResponse'
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get(
   "/check",
   authMiddleware.authenticate,
