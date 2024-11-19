@@ -123,4 +123,50 @@ router.get(
   handyManController.list.bind(handyManController)
 );
 
+/**
+ * @swagger
+ * /handyman/{id}:
+ *   put:
+ *     summary: Update handyman
+ *     tags: [HandyMan]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Handyman ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateHandyManDto'
+ *     responses:
+ *       200:
+ *         description: Handyman updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UpdateHandyManResponse'
+ *       400:
+ *         description: Invalid request
+ *         content: 
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.put(
+  "/:id",
+  authMiddleware.authenticate,
+  authMiddleware.requireRole(["admin"]),
+  handyManController.update.bind(handyManController)
+);
+
 export default router;
