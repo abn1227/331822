@@ -3,7 +3,7 @@ import { Button, Card, Container, Input } from "@/components";
 import MainLayout from "../../layouts/MainLayout";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/hooks";
+import { useAuth, useTranslation } from "@/hooks";
 import { Eye, EyeOff } from "lucide-react";
 
 const RegisterView = () => {
@@ -20,6 +20,9 @@ const RegisterView = () => {
   }
 
   const { register } = useAuth();
+  const { t } = useTranslation({
+    ns: "auth",
+  });
 
   const handleRegister = async () => {
     await register(email, password, firstName, lastName);
@@ -36,12 +39,12 @@ const RegisterView = () => {
           childrenClassName="flex flex-col gap-6"
           className="w-full md:w-2/3"
         >
-          <h2>Registrarse</h2>
+          <h2>{t("auth:register")}</h2>
           <p className="text-left text-sm text-foreground/60">
-            Ingresa tus datos para registrarte
+            {t("auth:registerDescription")}
           </p>
           <Input
-            label="Nombres"
+            label={t("auth:firstName")}
             variant="primary"
             fullWidth
             required
@@ -49,7 +52,7 @@ const RegisterView = () => {
             onChange={(e) => setFirstName(e.target.value)}
           />
           <Input
-            label="Apellidos"
+            label={t("auth:lastName")}
             variant="primary"
             fullWidth
             required
@@ -57,7 +60,7 @@ const RegisterView = () => {
             onChange={(e) => setLastName(e.target.value)}
           />
           <Input
-            label="Email"
+            label={t("auth:email")}
             variant="primary"
             fullWidth
             type="email"
@@ -66,7 +69,7 @@ const RegisterView = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <Input
-            label="Contraseña"
+            label={t("auth:password")}
             variant="secondary"
             fullWidth
             type="password"
@@ -85,12 +88,12 @@ const RegisterView = () => {
             }
           />
           <Button variant="primary" className="w-full" onClick={handleRegister}>
-            Registrarse
+            {t("auth:signUp")}
           </Button>
           <p className="text-center text-sm text-foreground/60">
-            ¿Ya tienes una cuenta?{" "}
+            {t("auth:alreadyHaveAnAccount")}{" "}
             <a className="text-accent" href="/login">
-              Iniciar sesión
+              {t("auth:login")}
             </a>
           </p>
         </Card>

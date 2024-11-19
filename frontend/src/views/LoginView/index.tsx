@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Card, Container, Input } from "@/components";
 import MainLayout from "../../layouts/MainLayout";
 import { Eye, EyeOff } from "lucide-react";
-import { useAuth } from "@/hooks";
+import { useAuth, useTranslation } from "@/hooks";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { Navigate } from "react-router-dom";
 
@@ -18,6 +18,9 @@ const LoginView = () => {
   }
 
   const { login } = useAuth();
+  const { t } = useTranslation({
+    ns: "auth",
+  });
 
   const handleLogin = async () => {
     await login(email, password);
@@ -35,23 +38,21 @@ const LoginView = () => {
           childrenClassName="flex flex-col gap-6"
           className="w-full md:w-2/3"
         >
-          <h2>Iniciar Sesión</h2>
+          <h2>{t("auth:login")}</h2>
           <p className="text-left text-sm text-foreground/60">
-            Ingresa tu email y contraseña para iniciar sesión
+            {t("auth:loginDescription")}
           </p>
           <Input
-            label="Email"
+            label={t("auth:email")}
             fullWidth
             type="email"
-            placeholder="example@example.com"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
           />
           <Input
-            label="Contraseña"
+            label={t("auth:password")}
             fullWidth
             type={passwordVisible ? "text" : "password"}
-            placeholder="Any password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             rightIcon={
@@ -66,12 +67,12 @@ const LoginView = () => {
             }
           />
           <Button variant="primary" className="w-full" onClick={handleLogin}>
-            Iniciar Sesión
+            {t("auth:signIn")}
           </Button>
           <p className="text-center text-sm text-foreground/60">
-            ¿No tienes una cuenta?{" "}
+            {t("auth:noAccount")}{" "}
             <a className="text-accent" href="/register">
-              Registrate aquí
+              {t("auth:register")}
             </a>
           </p>
         </Card>

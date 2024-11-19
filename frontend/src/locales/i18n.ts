@@ -10,6 +10,7 @@ import {
   categories as categoriesEs,
   jobPetitionManagement as jobPetitionManagementEs,
   landing as landingEs,
+  auth as authEs,
 } from "./es";
 import {
   common as commonEn,
@@ -19,6 +20,7 @@ import {
   categories as categoriesEn,
   jobPetitionManagement as jobPetitionManagementEn,
   landing as landingEn,
+  auth as authEn,
 } from "./en";
 
 export type Namespace =
@@ -45,6 +47,7 @@ const resources = {
     categories: categoriesEs,
     jobPetitionManagement: jobPetitionManagementEs,
     landing: landingEs,
+    auth: authEs,
   },
   en: {
     common: commonEn,
@@ -54,6 +57,7 @@ const resources = {
     categories: categoriesEn,
     jobPetitionManagement: jobPetitionManagementEn,
     landing: landingEn,
+    auth: authEn,
   },
 };
 
@@ -86,6 +90,7 @@ declare module "react-i18next" {
       categories: typeof categoriesEs;
       jobPetitionManagement: typeof jobPetitionManagementEs;
       landing: typeof landingEs;
+      auth: typeof authEs;
     };
   }
 }

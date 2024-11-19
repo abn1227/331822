@@ -5,3 +5,4 @@ export * from "./handyManManagement";
 export * from "./categories";
 export * from "./jobPetitionManagement";
 export * from "./landing";
+export * from "./auth";
