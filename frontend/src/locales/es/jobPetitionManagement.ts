@@ -33,4 +33,5 @@ export const jobPetitionManagement = {
   rateJob: "Calificar Trabajo",
   requestService: "Solicitar Servicio",
   thanksForRating: "Gracias por calificar el trabajo",
+  timePlaceholder: "Seleccionar hora",
 };

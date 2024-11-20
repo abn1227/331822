@@ -24,7 +24,9 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
     editData || {
       description: "",
       service: "",
-      availability: "",
+      availability: new Date()
+        .toLocaleDateString("en-US", { weekday: "long" })
+        .toLowerCase(),
       date: new Date().toISOString(),
       time: "",
     }
@@ -145,6 +147,7 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
           minTime="09:00"
           maxTime="16:00"
           required
+          placeholder={t("jobPetitionManagement:timePlaceholder")}
           className="w-full"
           variant="primary"
           format24h={false}

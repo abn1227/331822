@@ -163,7 +163,9 @@ const JobManagementDetail = () => {
                   options={handyManList.map((handyMan) => {
                     return {
                       value: handyMan._id,
-                      label: `${handyMan.firstName} ${handyMan.lastName} - (${handyMan.rating} ⭐) - (${handyMan.jobsCount} trabajos)`,
+                      label: `${handyMan.firstName} ${handyMan.lastName} - (${
+                        handyMan.rating || "0"
+                      } ⭐) - (${handyMan.jobsCount || "0"} trabajos)`,
                     };
                   })}
                   value={petition.handyManId}

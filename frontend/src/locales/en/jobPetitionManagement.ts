@@ -31,4 +31,5 @@ export const jobPetitionManagement = {
   rateJob: "Rate Job",
   requestService: "Request Service",
   thanksForRating: "Thanks for rating the job",
+  timePlaceholder: "Select time",
 };
