@@ -1,0 +1,20 @@
+export const backendErrors = {
+  userNotFound: "Usuario no encontrado",
+  userAlreadyExists: "El usuario ya existe",
+  invalidPassword: "Contraseña no válida",
+  invalidCredentials: "Credenciales no válidas",
+  handymanNotFound: "Prestador de servicios no encontrado",
+  jobPetitionNotFound: "Petición de trabajo no encontrada",
+  pendingJobPetition:
+    "Hay una petición de trabajo pendiente para este servicio",
+  categoryNotFound: "Categoría no encontrada",
+  invalidEmail: "Correo electrónico no válido",
+  invalidFirstName: "Nombre no válido",
+  invalidLastName: "Apellido no válido",
+  invalidPhone: "Teléfono no válido",
+  invalidExpertise: "Expertise no válido",
+  invalidAvailability: "Disponibilidad no válida",
+  invalidServices: "Servicios no válidos",
+  internalServer: "Error interno del servidor",
+  unauthorize: "No autorizado",
+};

@@ -11,6 +11,7 @@ import {
   jobPetitionManagement as jobPetitionManagementEs,
   landing as landingEs,
   auth as authEs,
+  backendErrors as backendErrorsEs,
 } from "./es";
 import {
   common as commonEn,
@@ -21,6 +22,7 @@ import {
   jobPetitionManagement as jobPetitionManagementEn,
   landing as landingEn,
   auth as authEn,
+  backendErrors as backendErrorsEn,
 } from "./en";
 
 export type Namespace =
@@ -48,6 +50,7 @@ const resources = {
     jobPetitionManagement: jobPetitionManagementEs,
     landing: landingEs,
     auth: authEs,
+    backendErrors: backendErrorsEs,
   },
   en: {
     common: commonEn,
@@ -58,6 +61,7 @@ const resources = {
     jobPetitionManagement: jobPetitionManagementEn,
     landing: landingEn,
     auth: authEn,
+    backendErrors: backendErrorsEn,
   },
 };
 

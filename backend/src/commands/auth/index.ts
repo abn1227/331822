@@ -25,7 +25,7 @@ export class AuthCommandHandlers {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("userNotFound");
     }
 
     const isValidPassword = await this.authService.validatePassword(
@@ -33,7 +33,7 @@ export class AuthCommandHandlers {
       password
     );
     if (!isValidPassword) {
-      throw new Error("Invalid password");
+      throw new Error("invalidPassword");
     }
 
     const token = this.authService.generateToken({
@@ -60,7 +60,7 @@ export class AuthCommandHandlers {
     const user = await this.userRepository.findByEmail(email);
 
     if (user) {
-      throw new Error("User already exists");
+      throw new Error("userAlreadyExists");
     }
 
     const hashedPassword = await hash(password, 10);

@@ -28,7 +28,7 @@ export class AuthController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -42,7 +42,7 @@ export class AuthController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -50,7 +50,7 @@ export class AuthController {
     try {
       const user = req.user;
       if (!user) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({ message: "unauthorized" });
       }
 
       return res.status(200).json({
@@ -62,7 +62,7 @@ export class AuthController {
       if (error instanceof Error) {
         return res.status(400).json({ message: error.message });
       }
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 }

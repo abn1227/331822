@@ -28,7 +28,7 @@ export class UserCommandHandlers {
     const existingUser = await this.userRepository.findByEmail(email);
 
     if (existingUser) {
-      throw new Error(`User already exists with email: ${email}`);
+      throw new Error("userAlreadyExists");
     }
 
     const hashedPassword = await hash(password, 10);
@@ -50,7 +50,7 @@ export class UserCommandHandlers {
     const user = await this.userRepository.findById(id);
 
     if (!user) {
-      throw new Error(`User not found with id: ${id}`);
+      throw new Error('userNotFound');
     }
 
     const { firstName, lastName, password } = data;
@@ -78,7 +78,7 @@ export class UserCommandHandlers {
     const user = await this.userRepository.findById(id);
 
     if (!user) {
-      throw new Error(`User not found with id: ${id}`);
+      throw new Error("userNotFound");
     }
 
     return await this.userRepository.delete(id);

@@ -34,7 +34,8 @@ export class ApiClient {
     }
 
     if (!response.ok) {
-      throw new ApiError(response.status, await response.text());
+      const error = await response.json();
+      throw new ApiError(response.status, error.message);
     }
 
     const data = await response.json();

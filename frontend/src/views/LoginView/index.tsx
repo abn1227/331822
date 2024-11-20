@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Container, Input } from "@/components";
 import MainLayout from "../../layouts/MainLayout";
 import { Eye, EyeOff } from "lucide-react";
-import { useAuth, useTranslation } from "@/hooks";
+import { useAuth, useToast, useTranslation } from "@/hooks";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { Navigate } from "react-router-dom";
 
@@ -12,19 +12,29 @@ const LoginView = () => {
   const [email, setEmail] = useState("");
 
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  const { addToast } = useToast();
 
   if (user && isAuthenticated) {
     return <Navigate to="/profile" />;
   }
 
-  const { login } = useAuth();
+  const { login, error } = useAuth();
   const { t } = useTranslation({
-    ns: "auth",
+    ns: ["auth", "backendErrors"],
   });
 
   const handleLogin = async () => {
     await login(email, password);
   };
+
+  useEffect(() => {
+    if (error) {
+      addToast({
+        type: "error",
+        message: t(`backendErrors:${error}`),
+      });
+    }
+  }, [error]);
 
   return (
     <MainLayout>

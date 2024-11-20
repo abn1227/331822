@@ -20,7 +20,7 @@ export class CategoryController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 }

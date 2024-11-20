@@ -9,7 +9,7 @@ import categoriesReducer from "./slices/categoriesSlice";
 const authPersistConfig = {
   key: "auth",
   storage,
-  whitelist: ["user", "token", "loading", "error", "isAuthenticated"],
+  whitelist: ["user", "token", "loading", "isAuthenticated", "error"],
 };
 
 const categoriesPersistConfig = {

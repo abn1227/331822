@@ -13,7 +13,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const dispatch = useAppDispatch();
-  const { user, token, loading, isAuthenticated } = useAppSelector(
+  const { user, token, loading, isAuthenticated, error } = useAppSelector(
     (state) => state.auth
   );
 
@@ -43,7 +43,15 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, token, login, register, logout: handleLogout }}
+      value={{
+        user,
+        loading,
+        token,
+        login,
+        register,
+        logout: handleLogout,
+        error,
+      }}
     >
       {loading && <Loader fullScreen variant="accent" size="lg" />}
       {!loading && children}

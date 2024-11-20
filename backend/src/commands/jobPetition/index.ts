@@ -37,7 +37,7 @@ export class JobPetitionCommandHandlers {
     });
 
     if (existentJobPetition.data.length > 0) {
-      throw new Error("There is a petition of this service already created");
+      throw new Error("pendingJobPetition");
     }
 
     const jobPetition = await this.jobPetitionRepository.create({
@@ -62,7 +62,7 @@ export class JobPetitionCommandHandlers {
     const jobPetition = await this.jobPetitionRepository.findById(id);
 
     if (!jobPetition) {
-      throw new Error(`JobPetition not found with id: ${id}`);
+      throw new Error("jobPetitionNotFound");
     }
 
     const { handyManId, status, description, date, time } = data;

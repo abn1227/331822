@@ -43,9 +43,9 @@ export const login = createAsyncThunk(
         credentials.password
       );
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.debug(error);
-      return rejectWithValue("Invalid email or password");
+      return rejectWithValue(error?.message || "Invalid email or password");
     }
   }
 );
@@ -69,9 +69,9 @@ export const register = createAsyncThunk(
         credentials.lastName
       );
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.debug(error);
-      return rejectWithValue("Error al registrar");
+      return rejectWithValue(error?.message || "Error al registrar");
     }
   }
 );
@@ -105,10 +105,10 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true;
       })
-      .addCase(checkAuth.rejected, (state, action) => {
+      .addCase(checkAuth.rejected, (state) => {
         state.loading = false;
         state.user = {} as LoggedInUser;
-        state.error = action.payload as string;
+        // state.error = null;
         state.isAuthenticated = false;
         state.token = "";
       })

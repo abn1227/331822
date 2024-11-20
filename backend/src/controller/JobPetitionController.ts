@@ -33,7 +33,7 @@ export class JobPetitionController {
       const createJobPetitionDto = req.body;
 
       if (!req.user) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({ message: "unauthorize" });
       }
 
       const command = new CreateJobPetitionCommand({
@@ -50,7 +50,7 @@ export class JobPetitionController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -59,7 +59,7 @@ export class JobPetitionController {
       const { id } = req.params;
 
       if (!req.user) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({ message: "unauthorize" });
       }
 
       let updateJobPetitionDto;
@@ -83,7 +83,7 @@ export class JobPetitionController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -103,7 +103,7 @@ export class JobPetitionController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -124,7 +124,7 @@ export class JobPetitionController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -143,7 +143,7 @@ export class JobPetitionController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -162,7 +162,7 @@ export class JobPetitionController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -189,7 +189,7 @@ export class JobPetitionController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 
@@ -198,7 +198,7 @@ export class JobPetitionController {
       const { limit, offset, search, status, service } = req.query;
 
       if (!req.user) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({ message: "unauthorize" });
       }
 
       const userId = req.user.id;
@@ -220,7 +220,7 @@ export class JobPetitionController {
         return res.status(400).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "internalServer" });
     }
   }
 }

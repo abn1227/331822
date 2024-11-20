@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Container, Input } from "@/components";
 import MainLayout from "../../layouts/MainLayout";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import { Navigate } from "react-router-dom";
-import { useAuth, useTranslation } from "@/hooks";
+import { useAuth, useToast, useTranslation } from "@/hooks";
 import { Eye, EyeOff } from "lucide-react";
 
 const RegisterView = () => {
@@ -19,10 +19,20 @@ const RegisterView = () => {
     return <Navigate to="/profile" />;
   }
 
-  const { register } = useAuth();
+  const { register, error } = useAuth();
+  const { addToast } = useToast();
   const { t } = useTranslation({
-    ns: "auth",
+    ns: ["auth", "backendErrors"],
   });
+
+  useEffect(() => {
+    if (error) {
+      addToast({
+        type: "error",
+        message: t(`backendErrors:${error}`),
+      });
+    }
+  }, [error]);
 
   const handleRegister = async () => {
     await register(email, password, firstName, lastName);

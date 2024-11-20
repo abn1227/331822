@@ -13,6 +13,7 @@ interface AuthContextProps {
     firstName: string,
     lastName: string
   ) => Promise<void>;
+  error: string | null;
 }
 
 export const AuthContext = createContext<AuthContextProps | null>(null);

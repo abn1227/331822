@@ -42,7 +42,7 @@ export class HandyManCommandHandlers {
     const handyMan = await this.handyManRepository.findById(id);
 
     if (!handyMan) {
-      throw new Error(`HandyMan not found with id: ${id}`);
+      throw new Error("handymanNotFound");
     }
 
     const { firstName, lastName, phone, expertise, availability, services } =
@@ -83,7 +83,7 @@ export class HandyManCommandHandlers {
     const handyMan = await this.handyManRepository.findById(id);
 
     if (!handyMan) {
-      throw new Error(`HandyMan not found with id: ${id}`);
+      throw new Error('handymanNotFound');
     }
 
     return await this.handyManRepository.delete(id);

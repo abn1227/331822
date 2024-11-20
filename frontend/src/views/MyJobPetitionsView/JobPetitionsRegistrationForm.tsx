@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Input, Select, Button } from "@/components";
 import { IJobPetition, IJobPetitionRecord } from "@/types/jobPetition";
 import { jobPetitionService } from "@/services/jobPetitionService";
 import { DatePicker, TimePicker } from "@/components";
-import { useToast } from "@/hooks";
+import { useToast, useTranslation } from "@/hooks";
 import { useCategories } from "@/hooks/useCategories";
 
 interface JobPetitionRegistrationForm {
@@ -35,6 +35,9 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
 
   const { services } = useCategories();
   const { addToast } = useToast();
+  const { t } = useTranslation({
+    ns: ["backendErrors"],
+  });
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -54,10 +57,6 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,10 +80,9 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
             onSuccess();
           })
           .catch((error) => {
-            const messageParsed = JSON.parse(error.message);
             addToast({
               type: "error",
-              message: messageParsed.message,
+              message: t(`backendErrors:${error.message}`),
             });
           });
       }

@@ -51,6 +51,9 @@ const options: swaggerJsdoc.Options = {
             code: {
               type: "string",
             },
+            messageCode: {
+              type: "string",
+            },
           },
         },
       },
