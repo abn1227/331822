@@ -25,4 +25,10 @@ export const jobPetitionManagement = {
   reject: "Reject",
   viewDetails: "View Details",
   complete: "Complete",
+
+  myPetitions: "My Petitions",
+  searchAndRequestJob: "Search and request jobs from our professionals.",
+  rateJob: "Rate Job",
+  requestService: "Request Service",
+  thanksForRating: "Thanks for rating the job",
 };

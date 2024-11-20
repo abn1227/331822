@@ -5,6 +5,7 @@ export interface IJobPetition {
   availability: string;
   date: string;
   time: string;
+  rating?: number;
 }
 
 export interface IJobPetitionRecord extends IJobPetition {

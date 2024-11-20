@@ -48,6 +48,7 @@ export class JobPetitionCommandHandlers {
       service,
       availability,
       date: new Date(date),
+      rating: 0,
       time,
     });
 
@@ -65,7 +66,7 @@ export class JobPetitionCommandHandlers {
       throw new Error("jobPetitionNotFound");
     }
 
-    const { handyManId, status, description, date, time } = data;
+    const { handyManId, status, description, date, time, rating } = data;
 
     if (handyManId) {
       jobPetition.handyManId = handyManId;
@@ -85,6 +86,10 @@ export class JobPetitionCommandHandlers {
 
     if (time) {
       jobPetition.time = time;
+    }
+
+    if (rating) {
+      jobPetition.rating = rating;
     }
 
     await this.jobPetitionRepository.update(id, jobPetition);

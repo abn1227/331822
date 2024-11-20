@@ -36,7 +36,7 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
   const { services } = useCategories();
   const { addToast } = useToast();
   const { t } = useTranslation({
-    ns: ["backendErrors"],
+    ns: ["backendErrors", "jobPetitionManagement", "categories"],
   });
 
   const validateForm = () => {
@@ -100,7 +100,7 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-4">
         <Select
-          label="Selecciona el tipo de servicio"
+          label={t("jobPetitionManagement:service")}
           options={services}
           value={formData.service}
           onChange={(value) =>
@@ -111,15 +111,14 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
           searchable
         />
         <Input
-          label="Descripción"
+          label={t("jobPetitionManagement:description")}
           value={formData.description}
           onChange={(e) =>
             setFormData({ ...formData, description: e.target.value })
           }
-          placeholder="Descripción del servicio"
         />
         <DatePicker
-          label="Fecha solicitud"
+          label={t("jobPetitionManagement:askedDay")}
           value={new Date(formData.date)}
           onChange={(e) =>
             setFormData({
@@ -139,13 +138,12 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
           variant="primary"
         />
         <TimePicker
-          label="Hora solicitud"
+          label={t("jobPetitionManagement:time")}
           value={formData.time}
           onChange={(value) => setFormData({ ...formData, time: value })}
           error={errors.time}
           minTime="09:00"
           maxTime="16:00"
-          placeholder="Hora solicitud"
           required
           className="w-full"
           variant="primary"
@@ -160,10 +158,10 @@ const JobPetitionRegistrationForm: React.FC<JobPetitionRegistrationForm> = ({
           onClick={onCancel}
           disabled={isLoading}
         >
-          Cancelar
+          {t("common:buttons.cancel")}
         </Button>
         <Button variant="primary" type="submit" loading={isLoading}>
-          Registrar
+          {t("common:buttons.save")}
         </Button>
       </div>
     </form>

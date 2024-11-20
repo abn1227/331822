@@ -8,6 +8,7 @@ import {
 } from "@/commands/handyman";
 import { HandyManQueryHandlers } from "@/queries/handyman";
 import { HandyManRepository } from "@/repositories/HandyManRepository";
+import { JobStatsRepository } from "@/repositories/JobStatsRepository";
 
 export class HandyManController {
   private commandHandlers: HandyManCommandHandlers;
@@ -15,8 +16,12 @@ export class HandyManController {
 
   constructor() {
     const handymanRepository = new HandyManRepository();
+    const jobStatsRepository = new JobStatsRepository();
     this.commandHandlers = new HandyManCommandHandlers(handymanRepository);
-    this.queryHandlers = new HandyManQueryHandlers(handymanRepository);
+    this.queryHandlers = new HandyManQueryHandlers(
+      handymanRepository,
+      jobStatsRepository
+    );
   }
 
   async create(req: Request, res: Response) {

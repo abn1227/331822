@@ -9,6 +9,7 @@ export interface IJobPetition extends Document {
   service: string;
   date: Date;
   time: string;
+  rating?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -72,6 +73,10 @@ const JobPetitionSchema = new Schema<IJobPetition>(
     time: {
       type: String,
       required: true,
+    },
+    rating: {
+      type: Number,
+      required: false,
     },
   },
   {

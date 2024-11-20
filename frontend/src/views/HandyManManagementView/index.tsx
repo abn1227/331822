@@ -184,13 +184,12 @@ const HandymanPage = () => {
                         {t(`categories:expertise.${handyman.expertise}`)}
                       </p>
 
-                      {/* Stats */}
-                      {/* <div className="flex items-center gap-4 text-sm text-foreground/60 mb-4">
-                      <span className="flex items-center gap-1">
-                        ⭐ {handyman.rating}
-                      </span>
-                      <span>{handyman.totalJobs} trabajos</span>
-                    </div> */}
+                      <div className="flex items-center gap-4 text-sm text-foreground/60 mb-4">
+                        <span className="flex items-center gap-1">
+                          ⭐ {handyman.rating || "0"}
+                        </span>
+                        <span>{handyman.jobsCount || "0"} trabajos</span>
+                      </div>
 
                       <div className="space-y-2 text-sm">
                         <p className="flex items-center gap-2">

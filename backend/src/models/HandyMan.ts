@@ -7,6 +7,8 @@ export interface IHandyMan extends Document {
   expertise: string;
   availability: string[];
   services: string[];
+  rating?: number;
+  jobsCount?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,6 +22,12 @@ export interface HandyManFilters {
     start?: Date;
     end?: Date;
   };
+}
+
+export interface IHandyManStats {
+  handyManId: string;
+  totalJobs: number;
+  averageRating: number;
 }
 
 const HandyManSchema = new Schema<IHandyMan>(

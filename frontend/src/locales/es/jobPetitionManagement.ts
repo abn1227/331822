@@ -27,4 +27,10 @@ export const jobPetitionManagement = {
   reject: "Rechazar",
   viewDetails: "Ver Detalles",
   complete: "Completar",
+
+  myPetitions: "Mis Peticiones",
+  searchAndRequestJob: "Busca y solicita trabajos de nuestros profesionales.",
+  rateJob: "Calificar Trabajo",
+  requestService: "Solicitar Servicio",
+  thanksForRating: "Gracias por calificar el trabajo",
 };

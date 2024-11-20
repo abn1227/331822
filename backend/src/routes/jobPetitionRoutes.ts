@@ -62,4 +62,10 @@ router.put(
   jobPetitionController.changeHandyMan.bind(jobPetitionController)
 );
 
+router.put(
+  "/:id/change-rating",
+  authMiddleware.authenticate,
+  jobPetitionController.changeRating.bind(jobPetitionController)
+);
+
 export default router;

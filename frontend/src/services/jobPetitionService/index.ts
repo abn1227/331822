@@ -97,6 +97,19 @@ class JobPetitionService {
     );
     return response;
   }
+
+  async changeRating(
+    id: string,
+    rating: number
+  ): Promise<ApiResponse<IJobPetitionRecord>> {
+    const response = await apiClient.put<IJobPetitionRecord>(
+      `${this.basePath}/${id}/change-rating`,
+      {
+        rating,
+      }
+    );
+    return response;
+  }
 }
 
 export const jobPetitionService = JobPetitionService.getInstance();

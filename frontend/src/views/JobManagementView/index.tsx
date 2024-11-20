@@ -242,6 +242,18 @@ const JobManagementView = () => {
                           </Button>
                         </div>
                       )}
+                      {petition.status === "completed" && (
+                        <div className="flex items-center justify-between gap-2 mt-4">
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              handleAcceptPetition(petition);
+                            }}
+                          >
+                            {t("jobPetitionManagement:viewDetails")}
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Card>

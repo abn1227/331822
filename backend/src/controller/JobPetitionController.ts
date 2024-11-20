@@ -107,6 +107,26 @@ export class JobPetitionController {
     }
   }
 
+  async changeRating(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const rating = req.body.rating;
+
+      const command = new UpdateJobPetitionCommand(id, {
+        rating,
+      });
+      const jobPetition = await this.commandHandlers.updateJobPetition(command);
+
+      res.status(200).json(jobPetition);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(400).json({ message: error.message });
+      }
+
+      return res.status(500).json({ message: "internalServer" });
+    }
+  }
+
   async changeHandyMan(req: Request, res: Response) {
     try {
       const { id } = req.params;

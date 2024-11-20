@@ -3,6 +3,7 @@ import { useTranslation } from "@/hooks";
 import MainLayout from "@/layouts/MainLayout";
 import { handymanService } from "@/services/handymanService";
 import { jobPetitionService } from "@/services/jobPetitionService";
+import { jobStatsService } from "@/services/jobStatsService";
 import { IHandyManRecord } from "@/types/handyman";
 import { IJobPetitionRecord } from "@/types/jobPetition";
 import moment from "moment";
@@ -53,7 +54,15 @@ const JobManagementDetail = () => {
         status: "assignated",
       })
       .then(() => {
-        navigate(`/job-petitions/${petition._id}`);
+        jobStatsService
+          .create({
+            handyManId,
+            jobPetitionId: petition._id,
+            rating: 0,
+          })
+          .then(() => {
+            navigate(`/job-petitions/${petition._id}`);
+          });
       });
   };
 
@@ -154,10 +163,15 @@ const JobManagementDetail = () => {
                   options={handyManList.map((handyMan) => {
                     return {
                       value: handyMan._id,
-                      label: `${handyMan.firstName} ${handyMan.lastName}`,
+                      label: `${handyMan.firstName} ${handyMan.lastName} - (${handyMan.rating} ⭐) - (${handyMan.jobsCount} trabajos)`,
                     };
                   })}
                   value={petition.handyManId}
+                  searchable
+                  disabled={
+                    petition.status === "completed" ||
+                    petition.status === "rejected"
+                  }
                   onChange={(value) =>
                     handleHandyManChange(value as string, petition)
                   }

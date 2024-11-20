@@ -5,6 +5,8 @@ export interface IHandyMan {
   expertise: string;
   availability: string[];
   services: string[];
+  rating?: number;
+  jobsCount?: number;
 }
 
 export interface IHandyManRecord extends IHandyMan {

@@ -8,6 +8,9 @@ import { Plus, Search } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import JobPetitionRegistrationForm from "./JobPetitionsRegistrationForm";
 import moment from "moment";
+import { useToast, useTranslation } from "@/hooks";
+import Rating from "@/components/Rating";
+import { jobStatsService } from "@/services/jobStatsService";
 
 const MyJobPetitionsView = () => {
   const RESULTS_PER_PAGE = 15;
@@ -24,6 +27,9 @@ const MyJobPetitionsView = () => {
     status: "" as string,
     availability: [] as string[],
   });
+  const [rating, setRating] = useState(0);
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
+  const [focusedPetition, setFocusedPetition] = useState<IJobPetitionRecord>();
 
   const {
     services,
@@ -39,6 +45,12 @@ const MyJobPetitionsView = () => {
     completed: "text-accent",
   };
 
+  const { t } = useTranslation({
+    ns: ["jobPetitionManagement", "categories", "common"],
+  });
+
+  const { addToast } = useToast();
+
   const loadMyPetitions = useCallback(async () => {
     setLoading(true);
     jobPetitionService
@@ -49,6 +61,23 @@ const MyJobPetitionsView = () => {
         setLoading(false);
       });
   }, [filters, page]);
+
+  const handleRatePetition = async (value: number) => {
+    if (!focusedPetition) {
+      return;
+    }
+    setLoading(true);
+    await jobStatsService.changeRating(focusedPetition._id, value);
+    await jobPetitionService.changeRating(focusedPetition._id, value);
+    addToast({
+      type: "success",
+      message: t("jobPetitionManagement:thanksForRating"),
+    });
+    setFocusedPetition(undefined);
+    setRating(0);
+    setIsRatingModalOpen(false);
+    loadMyPetitions();
+  };
 
   useEffect(() => {
     loadMyPetitions();
@@ -62,10 +91,10 @@ const MyJobPetitionsView = () => {
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex-1">
             <h1 className="text-2xl font-bold mb-2">
-              Mis Peticiones de Servicios
+              {t("jobPetitionManagement:myPetitions")}
             </h1>
             <p className="text-foreground/60">
-              Busca y solicita trabajos de nuestros profesionales.
+              {t("jobPetitionManagement:searchAndRequestJob")}
             </p>
           </div>
 
@@ -75,15 +104,17 @@ const MyJobPetitionsView = () => {
             className="whitespace-nowrap"
           >
             <Plus size={20} className="mr-2" />
-            Solicitar Un Servicio
+            {t("jobPetitionManagement:requestService")}
           </Button>
         </div>
 
         <Card className="p-4" variant="background">
-          <p className="text-foreground/60 mb-4">Filtrar por:</p>
+          <p className="text-foreground/60 mb-4">
+            {t("jobPetitionManagement:filterBy")}
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Input
-              label="Buscar por nombre..."
+              label={t("jobPetitionManagement:searchPlaceholder")}
               leftIcon={<Search size={20} />}
               value={filters.search}
               onChange={(e) =>
@@ -92,8 +123,13 @@ const MyJobPetitionsView = () => {
             />
 
             <Select
-              label="Estado"
-              options={jobPetitionStatus}
+              label={t("jobPetitionManagement:status")}
+              options={jobPetitionStatus.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:jobPetitionStatus.${options.value}`),
+                };
+              })}
               value={filters.status}
               onChange={(value) =>
                 setFilters({ ...filters, status: value as string })
@@ -101,8 +137,13 @@ const MyJobPetitionsView = () => {
             />
 
             <Select
-              label="Servicios"
-              options={services}
+              label={t("jobPetitionManagement:service")}
+              options={services.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:services.${options.value}`),
+                };
+              })}
               value={filters.services}
               onChange={(value) =>
                 setFilters({ ...filters, services: value as string[] })
@@ -112,8 +153,13 @@ const MyJobPetitionsView = () => {
             />
 
             <Select
-              label="Día solicitado"
-              options={availability}
+              label={t("jobPetitionManagement:askedDay")}
+              options={availability.map((options: CategoryOption) => {
+                return {
+                  value: options.value,
+                  label: t(`categories:availability.${options.value}`),
+                };
+              })}
               value={filters.availability}
               onChange={(value) =>
                 setFilters({ ...filters, availability: value as string[] })
@@ -137,12 +183,7 @@ const MyJobPetitionsView = () => {
                       <div className="flex items-center gap-2 justify-between">
                         <div className="flex items-center justify-center w-full">
                           <span className="text-xl font-bold text-contrast-foreground bg-primary/80 rounded-xl flex items-center justify-center w-full text-center">
-                            {
-                              services.find(
-                                (service: CategoryOption) =>
-                                  service.value === petition.service
-                              )?.label
-                            }
+                            {t(`categories:services.${petition.service}`)}
                           </span>
                         </div>
                       </div>
@@ -152,12 +193,7 @@ const MyJobPetitionsView = () => {
                             statusColor[petition.status]
                           }`}
                         >
-                          {
-                            jobPetitionStatus.find(
-                              (opt: CategoryOption) =>
-                                opt.value === petition.status
-                            )?.label
-                          }
+                          {t(`categories:jobPetitionStatus.${petition.status}`)}
                         </p>
                       )}
                       <h3 className="font-semibold w-full text-justify">
@@ -166,7 +202,7 @@ const MyJobPetitionsView = () => {
 
                       <div className="flex items-center gap-2 mt-4">
                         <p className="text-sm text-foreground/60">
-                          Fecha de solicitud:
+                          {t("jobPetitionManagement:askedDay")}:
                         </p>
                         <p className="text-sm text-foreground/60 font-bold">
                           {moment(petition.date).format("DD/MM/YYYY")}
@@ -175,12 +211,31 @@ const MyJobPetitionsView = () => {
 
                       <div className="flex items-center gap-2 mt-4">
                         <p className="text-sm text-foreground/60">
-                          Hora de solicitud:
+                          {t("jobPetitionManagement:time")}:
                         </p>
                         <p className="text-sm text-foreground/60 font-bold">
                           {petition.time}
                         </p>
                       </div>
+                      {petition.status === "completed" && (
+                        <div className="flex items-center justify-between gap-2 mt-4">
+                          <Button
+                            variant="primary"
+                            disabled={petition.rating ? petition.rating > 0 : false}
+                            onClick={() => {
+                              setFocusedPetition(petition);
+                              setIsRatingModalOpen(true);
+                            }}
+                          >
+                            {t("jobPetitionManagement:rateJob")}
+                          </Button>
+                          <Rating
+                            value={petition.rating}
+                            variant="accent"
+                            readOnly
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Card>
@@ -192,21 +247,21 @@ const MyJobPetitionsView = () => {
                 disabled={page === 1}
                 onClick={() => setPage(page - 1)}
               >
-                Anterior
+                {t("common:buttons.previous")}
               </Button>
               <Button
                 variant="transparent"
                 disabled={page === totalPages}
                 onClick={() => setPage(page + 1)}
               >
-                Siguiente
+                {t("common:buttons.next")}
               </Button>
             </div>
           </div>
         ) : (
           <Card className="p-8 text-center" variant="error">
             <p className="text-foreground/60">
-              No se encontraron peticiones con los filtros seleccionados.
+              {t("jobPetitionManagement:noPetitionsFound")}
             </p>
           </Card>
         )}
@@ -215,7 +270,7 @@ const MyJobPetitionsView = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Solicitar Servicio"
+        title={t("jobPetitionManagement:requestService")}
         variant="background"
       >
         <JobPetitionRegistrationForm
@@ -225,6 +280,25 @@ const MyJobPetitionsView = () => {
           }}
           onCancel={() => setIsModalOpen(false)}
         ></JobPetitionRegistrationForm>
+      </Modal>
+
+      <Modal
+        isOpen={isRatingModalOpen}
+        onClose={() => setIsRatingModalOpen(false)}
+        title={t("jobPetitionManagement:rateJob")}
+        variant="transparent"
+        className="w-full max-w-sm"
+      >
+        <div className="flex flex-col items-center justify-center gap-4 p-4">
+          <Rating
+            value={rating}
+            onChange={(value) => handleRatePetition(value)}
+            max={5}
+            variant="accent"
+            allowHalf
+            showValue
+          />
+        </div>
       </Modal>
     </MainLayout>
   );
