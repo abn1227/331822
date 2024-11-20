@@ -18,7 +18,10 @@ Un marketplace de servicios que conecta usuarios con proveedores de servicios.
 - Tailwind CSS
 - React Query
 - React Router
-- Zustand
+- Redux Toolkit
+- Redux Persist
+- Storybook
+- i18next
 - Vite
 
 ## 📋 Prerequisitos
@@ -59,10 +62,12 @@ JWT_SECRET=your_jwt_secret_here
 JWT_EXPIRES_IN=24h
 ```
 
-<!-- Frontend (.env):
+Frontend (.env):
 ```env
 VITE_API_URL=http://localhost:3000/api
-``` -->
+```
+
+Se dejan los archivos de configuración de entorno de la aplicación en el directorio `backend/.env.development` y `frontend/.env.development`.
 
 ## 🚀 Iniciar el Proyecto
 
@@ -77,26 +82,17 @@ Este comando:
 - Inicia MongoDB usando Docker Compose
 - Inicia el servidor de desarrollo con hot-reload
 
-<!-- 2. Iniciar el frontend:
+2. Iniciar el frontend:
 ```bash
 cd frontend
 npm run dev
-``` -->
-
-<!-- ### Producción
-
-1. Build del backend:
-```bash
-cd backend
-npm run build
-npm start
 ```
 
-2. Build del frontend:
+Otra opcion para iniciar el proyecto:
 ```bash
-cd frontend
-npm run build
-``` -->
+./run.sh
+```
+Este script inicia todos los servicios y mantiene el script corriendo.
 
 ## 📁 Estructura del Proyecto
 
@@ -104,18 +100,19 @@ npm run build
 ```
 backend/
 ├── src/
-│   ├── controllers/    # Controladores de la aplicación
+│   ├── commands/       # Comandos CQRS
+│   ├── config/         # Configuraciones
+│   ├── controller/     # Controladores de la aplicación
+│   ├── dtos/           # Objetos de transferencia de datos
+│   ├── middlewares/    # Middlewares de Express
+│   ├── models/         # Modelos de MongoDB
+│   ├── queries/        # Consultas CQRS
+│   ├── repositories/   # Repositorios para acceso a datos
+│   ├── routes/         # Definición de rutas
+│   ├── seeders/        # Datos de prueba
 │   ├── services/       # Servicios de negocio
 │   ├── types/          # Tipos de datos
-│   ├── models/         # Modelos de MongoDB
-│   ├── repositories/   # Repositorios para acceso a datos
-│   ├── commands/       # Comandos CQRS
-│   ├── queries/        # Consultas CQRS
-│   ├── dtos/          # Objetos de transferencia de datos
-│   ├── middlewares/    # Middlewares de Express
-│   ├── routes/         # Definición de rutas
 │   ├── utils/          # Utilidades
-│   ├── config/        # Configuraciones
 │   └── app.ts         # Punto de entrada
 ├── tests/
 ├── .env
@@ -123,22 +120,29 @@ backend/
 └── package.json
 ```
 
-<!-- ### Frontend
+### Frontend
 ```
 frontend/
 ├── src/
+│   ├── assets/        # Imágenes, iconos, etc.
 │   ├── components/    # Componentes React
-│   ├── hooks/        # Custom hooks
-│   ├── services/     # Servicios de API
-│   ├── contexts/     # Contextos de React
-│   ├── pages/        # Páginas/Rutas
-│   ├── utils/        # Utilidades
+│   ├── contexts/      # Contextos de React
+│   ├── hooks/         # Custom hooks
+│   ├── layouts/       # Layouts
+│   ├── locales/       # Traducciones
+│   ├── providers/     # Proveedores de servicios
+│   ├── routes/        # Páginas/Rutas
+│   ├── services/      # Servicios de API
+│   ├── store/         # Contexto de Redux
+│   ├── stories/       # Storybook
+│   ├── types/         # Tipos de datos
+│   ├── views/         # Vistas
 │   ├── App.tsx
 │   └── main.tsx
 ├── public/
 ├── .env
 └── package.json
-``` -->
+```
 
 ## 🔐 Autenticación
 
@@ -205,12 +209,11 @@ El sistema tiene dos roles principales:
 1. **Admin**
 - Gestionar proveedores de servicios
 - Ver y gestionar todos los trabajos
-- Gestionar usuarios
 
-2. **Usuario**
+1. **Usuario**
 - Solicitar servicios
-- Ver sus propios trabajos
-- Actualizar su perfil
+- Ver sus propias solicitudes trabajos
+- Puntuar trabajos
 
 ## 🧪 Scripts Disponibles
 
@@ -226,14 +229,27 @@ npm run docker:up    # Inicia los servicios de Docker
 npm run docker:down  # Detiene los servicios de Docker
 ```
 
-<!-- ### Frontend
+### Frontend
 ```bash
 npm run dev          # Inicia el servidor de desarrollo
 npm run build        # Compila el proyecto
 npm run preview      # Vista previa de la build
 npm run lint         # Ejecuta el linter
-npm run format       # Formatea el código
-``` -->
+npm run storybook    # Inicia el servidor de Storybook
+```
+
+## 📝 Otras Herramientas
+
+El proyecto utiliza documentación en backend y frontend:
+
+### Backend
+Documentación de Swagger:
+- http://localhost:3000/api-docs
+
+### Frontend
+Storybook:
+- http://localhost:6006
+
 
 ## 📝 Convenciones de Código
 
